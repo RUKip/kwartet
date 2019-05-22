@@ -13,7 +13,7 @@ class Model(object):
     CARD_DEFINITION_LOCATION = "CardDefinitions.txt"
 
     def __init__(self, player_cnt):
-        self.players = range(1,player_cnt)
+        self.players = range(1,player_cnt+1)
 
     def initModel(self):
         file = open(os.path.dirname(os.path.abspath(__file__)) + "/" + self.CARD_DEFINITION_LOCATION, "r")
