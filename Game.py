@@ -1,4 +1,4 @@
-from kwartet.Model import Model
+from Model import Model
 
 class Game(object):
 
@@ -6,12 +6,13 @@ class Game(object):
         player_cnt = None
         while player_cnt is None:
             try:
-                player_cnt = input("How many players?: ")
+                player_cnt = int(input("How many players?: "))
             except:
                 print("Not valid, try a different number")
                 pass
 
         model = Model(player_cnt)
+        model.initModel()
 
 
     def startGame(self):

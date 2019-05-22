@@ -1,4 +1,4 @@
-from kwartet.Model import Model
+from Model import Model
 
 
 class Agent(object):
