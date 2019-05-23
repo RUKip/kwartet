@@ -30,6 +30,7 @@ class Model(object):
                     if (not group in self.group_model):
                         self.group_model[group] = {}
                     self.group_model[group][player] = self.WORLD_MAYBE
-        print("Group model: " + str(self.group_model))
-        print("Card model: " + str(self.card_model))
+
+        print("Initial group model: " + str(self.group_model))
+        print("Initial card model: " + str(self.card_model))
         file.close()

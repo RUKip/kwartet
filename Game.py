@@ -13,7 +13,8 @@ class Game(object):
             try:
                 player_cnt = int(input("How many players?: "))
                 if(player_cnt<1):
-                    raise Exception("Too small player count!")
+                    print("Too small player count!")
+                    player_cnt = None
             except:
                 print("Not valid, try a different number")
                 pass
