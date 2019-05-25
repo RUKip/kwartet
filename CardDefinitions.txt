@@ -8,7 +8,7 @@ super_heroes superman
 super_heroes batman
 super_heroes noobnoob
 
-healthy_food brocoli
+healthy_food giants_milk
 healthy_food cucumber
 healthy_food vitamin_pill
-healthy_food advacado
+healthy_food avocado
