@@ -11,4 +11,4 @@ source myenv/bin/activate
 export PYTHONPATH="$PYTHONPATH:/<path_to_main_folder>"
 ```
 ### Report
-The report can be found at: [rukip.github.io/MAS/kwartet.html]
+The report can be found at:[https://rukip.github.io/MAS/kwartet.html]
