@@ -75,8 +75,7 @@ class Model(object):
         return (None, None) #no more options
 
     def removeCard(self, card, player):
-        group, card_name = card
-        self.card_model[group][player][card_name] = self.WORLD_DELETED
+        self.card_model[card.getGroup()][player][card.getCard()] = self.WORLD_DELETED
 
     def removeGroup(self, group, player):
         self.group_model[group][player] = self.WORLD_DELETED
@@ -84,6 +83,6 @@ class Model(object):
     def setOwner(self, owner):
         if(owner is not None):
             self.owner = owner
-            self.players.remove(owner)
+            self.players.remove(owner.id)
         else:
             raise Exception("Model already has an owner!")

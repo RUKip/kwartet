@@ -1,3 +1,5 @@
+import time
+
 from Agent import Agent
 from Card import Card
 from Model import Model
@@ -45,7 +47,7 @@ class Game(object):
                 all_cards.remove((group,name))
                 random_card = Card(group, name)
                 self.cards_in_play[agent.id].append(random_card)
-                agent.giveCard(random_card)
+                agent.giveCard(random_card, agent.id)
 
         #intialize agent specific models
         for agent in self.agents:
@@ -61,5 +63,9 @@ class Game(object):
                 if(card is None):   #no more card options
                     self.agents.remove(player)
                     self.scores[player.id] = player.getScore()
+                    print("FATALITY!!")
+                else:
+                    print("Agent " + str(player.id) + ", asked player " + player_id + " for card " + card.getGroup() + ":" + card.getCard())
+                time.sleep(2) #wait 2 seconds for before making another decision
 
         #TODO: count score here

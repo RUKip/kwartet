@@ -11,13 +11,12 @@ class Agent(object):
 		self.id = id
 
 	def makeDecision(self):
-		card = None
-		return card
+		return self.model.getPossiblity(self.card_set)
 
 	def generateInitialModel(self, init_card_set):
-		card_set = init_card_set
-		for card in card_set:
-			self.model.removeCard(card)
+		self.card_set = init_card_set
+		for card in self.card_set:
+			self.model.removeCard(card, self.id)
 
 	def askCard(self):
 		(card,player) = self.model.getPossiblity(self.card_set)
