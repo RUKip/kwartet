@@ -1,4 +1,5 @@
 from Agent import Agent
+from Card import Card
 from Model import Model
 import random
 
@@ -6,6 +7,7 @@ class Game(object):
 
     agents = []
     cards_in_play = {}
+    scores = {}
 
     def initGame(self):
         player_cnt = None
@@ -35,17 +37,29 @@ class Game(object):
         all_cards = []
         for group in all_groups:
             for card in model.card_model[group][1].keys():
-                all_cards.append((group, card))
+                all_cards.append((group,card))
 
         while(len(all_cards)>1):
             for agent in self.agents:
-                random_card = random.choice(all_cards)
-                all_cards.remove(random_card)
+                (group, name) = random.choice(all_cards)
+                all_cards.remove((group,name))
+                random_card = Card(group, name)
                 self.cards_in_play[agent.id].append(random_card)
                 agent.giveCard(random_card)
+
+        #intialize agent specific models
+        for agent in self.agents:
+            agent.generateInitialModel(self.cards_in_play[agent.id])
 
         print("Agent card division is: " + str(self.cards_in_play)) #log this
 
     def startGame(self):
-        return None
-        #do some game loop here
+        #play untill no more agents are in the game
+        while(self.agents):
+            for player in self.agents:
+                (card, player_id) = player.makeDecision()
+                if(card is None):   #no more card options
+                    self.agents.remove(player)
+                    self.scores[player.id] = player.getScore()
+
+        #TODO: count score here
