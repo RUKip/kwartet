@@ -73,10 +73,6 @@ class Game(object):
 
 
     def askingRound(self, current_player):
-        if not self.agents.values():
-            print("\n--------------------------------\nGame over!")
-            return False
-
         print("Starting a question round for player " + str(current_player.id) + ": ")
         (card, player_id) = current_player.makeDecision()
         print('card choice: ' + str(card) + ", to player: " + str(player_id))
@@ -85,6 +81,9 @@ class Game(object):
             self.scores[current_player.id] = current_player.getScore()
             print("FATALITY!!")
             print("Agent has no more options picking random new player")
+            if not self.agents.values():
+                print("\n--------------------------------\nGame over!")
+                return False
             return random.choice(list(self.agents.values()))
         else:
             print("Agent " + str(current_player.id) + ", asked player " + str(player_id) + " for card " + str(

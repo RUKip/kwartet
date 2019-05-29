@@ -19,6 +19,7 @@ class Agent(object):
 		self.card_set = init_card_set
 		for group in self.card_set:
 			for card in self.card_set[group]:
+				print("Opponents!: " + str(self.opponents))
 				for opponent_id in self.opponents:
 					self.model.setCardForPlayer(card, opponent_id, Model.WORLD_DELETED)
 				self.checkKwartet(card)
