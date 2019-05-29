@@ -43,12 +43,17 @@ class Model(object):
     def getPossiblity(self, card_set):
         known_groups = []
         possible_groups = []
-        for group in card_set:
+        print("Player possiblities: " + str(self.players))
+        for card in card_set:
             for player in self.players:
-                if(self.group_model[group][player] == self.WORLD_KNOWN):
-                    known_groups.append((group, player))
-                elif(self.group_model[group][player] == self.WORLD_MAYBE):
-                    possible_groups.append((group,player))
+                print("State of card: " + str(card)  + " for player " + str(player) +  " is: " + str(self.group_model[card.getGroup()][player]))
+                if(self.group_model[card.getGroup()][player] == self.WORLD_KNOWN):
+                    known_groups.append((card.getGroup(), player))
+                elif(self.group_model[card.getGroup()][player] == self.WORLD_MAYBE):
+                    possible_groups.append((card.getGroup(),player))
+
+        print("Card set: " + str(card_set))
+        print("Possible groups: " + str(possible_groups) + ", known groups: " + str(known_groups))
 
         known_cards = []
         possible_cards = []
@@ -56,10 +61,10 @@ class Model(object):
         if known_groups:
             for (group,player) in known_groups:
                 for card in self.card_model[group][player]:
-                    if(self.card_model[group][player][card] == self.WORLD_KNOWN):
-                        known_cards.append((Card(group, card),player))
-                    elif(self.card_model[group][player][card] == self.WORLD_MAYBE):
-                        possible_cards.append((Card(group, card),player))
+                    if(self.card_model[group][player][card.getCard()] == self.WORLD_KNOWN):
+                        known_cards.append((card,player))
+                    elif(self.card_model[group][player][card.getCard()] == self.WORLD_MAYBE):
+                        possible_cards.append((card,player))
             if known_cards:
                 return random.choice(known_cards)       #ask a know card
             elif possible_cards:
@@ -81,7 +86,7 @@ class Model(object):
         self.group_model[group][player] = self.WORLD_DELETED
 
     def setOwner(self, owner):
-        if(owner is not None):
+        if(self.owner is None):
             self.owner = owner
             self.players.remove(owner.id)
         else:

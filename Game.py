@@ -1,4 +1,5 @@
 import time
+from copy import copy, deepcopy
 
 from Agent import Agent
 from Card import Card
@@ -30,7 +31,7 @@ class Game(object):
         #create agents and set model
         for x in range(1, player_cnt+1):
             agent = Agent(x)
-            agent.setModel(model)
+            agent.setModel(deepcopy(model))
             self.agents.append(agent)
             self.cards_in_play[agent.id] = []
 
@@ -47,7 +48,7 @@ class Game(object):
                 all_cards.remove((group,name))
                 random_card = Card(group, name)
                 self.cards_in_play[agent.id].append(random_card)
-                agent.giveCard(random_card, agent.id)
+                agent.card_set.append(random_card)
 
         #intialize agent specific models
         for agent in self.agents:
@@ -60,12 +61,14 @@ class Game(object):
         while(self.agents):
             for player in self.agents:
                 (card, player_id) = player.makeDecision()
+                print('card choice: ' + str(card) + ", to player: " + str(player_id))
                 if(card is None):   #no more card options
                     self.agents.remove(player)
                     self.scores[player.id] = player.getScore()
                     print("FATALITY!!")
                 else:
-                    print("Agent " + str(player.id) + ", asked player " + player_id + " for card " + card.getGroup() + ":" + card.getCard())
+                    print("Agent " + str(player.id) + ", asked player " + str(player_id) + " for card " + str(card.getGroup()) + ":" + str(card.getCard()))
                 time.sleep(2) #wait 2 seconds for before making another decision
 
         #TODO: count score here
+        print("scores: " + str(self.scores))
