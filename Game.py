@@ -30,7 +30,9 @@ class Game(object):
 
         #create agents and set model
         for x in range(1, player_cnt+1):
-            agent = Agent(x)
+            opponents = list(range(1, player_cnt+1))
+            opponents.remove(x)
+            agent = Agent(x, opponents)
             agent.setModel(deepcopy(model))
             self.agents[x] = agent
             self.cards_in_play[agent.id] = {}
