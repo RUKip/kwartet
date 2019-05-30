@@ -80,7 +80,6 @@ class Game(object):
             self.agents.pop(current_player.id)
             self.scores[current_player.id] = current_player.getScore()
             logging.error("FATALITY!!")
-            print("FATALITY!!")
             logging.info("Agent has no more options picking random new player")
             if not self.agents.values():
                 logging.info("\n--------------------------------\nGame over!")

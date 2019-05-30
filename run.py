@@ -12,6 +12,12 @@ logging.basicConfig(filename='output.log',
                     format='%(asctime)s -  %(levelname)s - %(message)s')
 
 
+# define a Handler which writes WARNING messages or higher to the sys.stderr
+console = logging.StreamHandler()
+console.setLevel(logging.WARNING)
+formatter = logging.Formatter('%(levelname)s - %(message)s')
+console.setFormatter(formatter)
+logging.getLogger().addHandler(console)
 logging.info("Starting simulation")
 icon = """
           _____
