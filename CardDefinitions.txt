@@ -1,7 +1,7 @@
 farm_animals a_fat_cow
 farm_animals proud_chicken
 farm_animals crazy_pig
-farm_animals the_smelly_goat
+farm_animals smelly_goat
 
 super_heroes spiderman
 super_heroes superman
