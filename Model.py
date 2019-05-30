@@ -1,4 +1,5 @@
 import os
+import logging
 
 from Card import Card
 import random
@@ -43,13 +44,13 @@ class Model(object):
     def getPossiblity(self, card_set):
         known_groups, possible_groups = self.getGroupOptions(card_set)
 
-        print("Card set: " + str(card_set))
-        print("Possible groups: " + str(possible_groups) + ", known groups: " + str(known_groups))
+        logging.info("Card set: " + str(card_set))
+        logging.info("Possible groups: " + str(possible_groups) + ", known groups: " + str(known_groups))
 
         #prioritize known groups
         if known_groups:
             known_cards, possible_cards = self.getCardOptions(known_groups)
-            print("Known group - Possible cards: " + str(possible_cards) + ", known cards: " + str(known_cards))
+            logging.info("Known group - Possible cards: " + str(possible_cards) + ", known cards: " + str(known_cards))
 
             if known_cards:
                 return random.choice(known_cards)       #ask a know card
@@ -59,7 +60,7 @@ class Model(object):
 
         if possible_groups:
             _ , possible_cards = self.getCardOptions(possible_groups) #if card is known, group is known so no option of known_card in possible group
-            print("Possible group - Possible cards: " + str(possible_cards))
+            logging.info("Possible group - Possible cards: " + str(possible_cards))
             if possible_cards:
                 return random.choice(possible_cards)    #ask a possible card
         return (None, None) #no more options

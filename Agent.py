@@ -1,4 +1,7 @@
+import logging
+
 from Model import Model
+
 
 class Agent(object):
 
@@ -19,11 +22,11 @@ class Agent(object):
 		self.card_set = init_card_set
 		for group in self.card_set:
 			for card in self.card_set[group]:
-				print("Opponents!: " + str(self.opponents))
+				logging.info("Opponents!: " + str(self.opponents))
 				for opponent_id in self.opponents:
 					self.model.setCardForPlayer(card, opponent_id, Model.WORLD_DELETED)
 				self.checkKwartet(card)
-		print("Card model for agent " + str(self.id) + " : " + str(self.model.card_model))
+		logging.info("Card model for agent " + str(self.id) + " : " + str(self.model.card_model))
 
 	def askCard(self):
 		(card,player) = self.model.getPossiblity(self.card_set)
@@ -57,7 +60,7 @@ class Agent(object):
 	#TODO: notify all other players that cards are gone could speed up their decision making but not required
 	def checkKwartet(self, latest_added_card):
 		if (len(self.card_set[latest_added_card.getGroup()]) > 3):
-			print("Kwartet! Found 4 cards of group " + latest_added_card.getGroup())
+			logging.info("Kwartet! Found 4 cards of group " + latest_added_card.getGroup())
 			self.model.setGroupForPlayer(latest_added_card.getGroup(), self, Model.WORLD_DELETED)
 			for card in self.card_set[latest_added_card.getGroup()]:
 				self.removeCard(card)
