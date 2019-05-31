@@ -1,8 +1,10 @@
 import os
 import logging
+import copy
 
 from Card import Card
 import random
+
 
 class Model(object):
 
@@ -13,12 +15,20 @@ class Model(object):
     group_model = {}    #Model of group options
     card_model = {}     #Full model of card options
     players = []        #Players id's excluding self
-    owner = None        #Owner of this model
+    # owner = None        #Owner of this model
 
     CARD_DEFINITION_LOCATION = "CardDefinitions.txt"
 
     def __init__(self, player_cnt):
         self.players = list(range(1,player_cnt+1))
+
+    def __deepcopy__(self, memodict={}):
+        newone = type(self)(len(self.players))
+        newone.__dict__.update(self.__dict__)
+        newone.group_model = copy.deepcopy(self.group_model, memodict)
+        newone.card_model = copy.deepcopy(self.card_model, memodict)
+        newone.players = copy.deepcopy(self.players, memodict)
+        return newone
 
     def initModel(self):
         file = open(os.path.dirname(os.path.abspath(__file__)) + "/" + self.CARD_DEFINITION_LOCATION, "r")
@@ -36,8 +46,8 @@ class Model(object):
                         self.group_model[group] = {}
                     self.group_model[group][player] = self.WORLD_MAYBE
 
-        #print("Initial group model: " + str(self.group_model)) #debug
-        #print("Initial card model: " + str(self.card_model)) #debug
+        logging.debug("Initial group model: " + str(self.group_model))
+        logging.debug("Initial card model: " + str(self.card_model))
         file.close()
 
     #returns tuple (Card card, int player_id)
@@ -88,20 +98,5 @@ class Model(object):
                     possible_cards.append((Card(group,card), player))
         return (known_cards, possible_cards)
 
-    def setCardForPlayer(self, card, player_id, operator):
-        self.card_model[card.getGroup()][player_id][card.getCard()] = operator
-
     def setGroupForPlayer(self, group, player_id, operator):
             self.group_model[group][player_id] = operator
-
-    def setOwner(self, owner):
-        if(self.owner is None):
-            self.owner = owner
-            self.players.remove(owner.id)
-            # make sure the agent cant ask himself! by removing him from the model
-            for group in self.group_model:
-                self.setGroupForPlayer(group, owner.id, self.WORLD_DELETED)
-                for card in self.card_model[group][owner.id]:
-                    self.setCardForPlayer(Card(group,card), owner.id, self.WORLD_DELETED)
-        else:
-            raise Exception("Model already has an owner!")

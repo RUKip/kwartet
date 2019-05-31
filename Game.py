@@ -1,11 +1,12 @@
 import time
-from copy import copy, deepcopy
+from copy import deepcopy
 import logging
 
 from Agent import Agent
 from Card import Card
 from Model import Model
 import random
+
 
 class Game(object):
 
@@ -56,14 +57,17 @@ class Game(object):
 
         #intialize agent specific models
         for agent in self.agents.values():
-            agent.generateInitialModel(deepcopy(self.cards_in_play[agent.id]))
+            agent_card_set = deepcopy(self.cards_in_play[agent.id])
+            agent.generateInitialModel(agent_card_set)
+            logging.debug("Opponents for agent " + str(agent.id) + ": " + str(agent.opponents))
+            logging.info("Card model for agent " + str(agent.id) + ": " + str(agent.model.card_model))
 
         logging.info("Agent card division is: " + str(self.cards_in_play))
 
     def startGame(self):
         #play untill no more agents are in the game
         agent = random.choice(list(self.agents.values()))
-        logging.info("Player " + str(agent.id) + " is going to start")
+        logging.info("Player " + str(agent.id) + " is going to start the game")
         while(agent):
             agent = self.askingRound(agent)
             time.sleep(2)  # wait 2 seconds for before making another decision
