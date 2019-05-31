@@ -62,7 +62,7 @@ class Game(object):
             logging.debug("Opponents for agent " + str(agent.id) + ": " + str(agent.opponents))
             logging.info("Card model for agent " + str(agent.id) + ": " + str(agent.model.card_model))
 
-        logging.info("Agent card division is: " + str(self.cards_in_play))
+        logging.info("Players card division is: " + str(self.cards_in_play))
 
     def startGame(self):
         #play untill no more agents are in the game
@@ -70,41 +70,43 @@ class Game(object):
         logging.info("Player " + str(agent.id) + " is going to start the game")
         while(agent):
             agent = self.askingRound(agent)
-            time.sleep(2)  # wait 2 seconds for before making another decision
-            logging.info("\n-------------------------------------\n")
+            # time.sleep(2)  # wait 2 seconds for before making another decision
+            logging.info("-------- Starting next turn --------")
 
         logging.info("scores: " + str(self.scores))
 
     def askingRound(self, current_player):
         logging.info("Starting a question round for player " + str(current_player.id) + ": ")
         (card, player_id) = current_player.makeDecision()
-        logging.info("card choice: " + str(card) + ", to player: " + str(player_id))
+        logging.debug("Card choice: " + str(card) + ", to player: " + str(player_id))
         if (card is None):  # no more card options
             self.agents.pop(current_player.id)
             self.scores[current_player.id] = current_player.getScore()
-            logging.info("FATALITY!! Agent " + str(current_player.id) + " has no more options, picking random new player")
+            logging.info("FATALITY!! Player " + str(current_player.id) + " has no more options, picking random new player")
             if not self.agents.values():
                 logging.info("\n--------------------------------\nGame over!")
                 return False
             return random.choice(list(self.agents.values()))
         else:
-            logging.info("Agent " + str(current_player.id) + ", asked player " + str(player_id) + " for card " + str(
+            logging.info("Player " + str(current_player.id) + ", asked player " + str(player_id) + " for card " + str(
                 card.getGroup()) + ":" + str(card.getCard()))
             asked_player = self.agents[player_id]
             if card in self.cards_in_play[player_id][card.getGroup()]:
-                logging.info("Agent " + str(current_player.id) + ", gave player " + str(player_id) + " the card " + str(card.getCard()))
-                self.transferCard(card, asked_player,current_player)
+                logging.info("Player " + str(current_player.id) +
+                             ", gave player " + str(player_id) +
+                             " the card " + str(card.getCard()))
+                self.transferCard(card, asked_player, current_player)
                 for player in self.agents.values():
-                    player.AnnouncementGaveCard(card, current_player, asked_player)
+                    player.AnnouncementGaveCard(card, current_player.id, asked_player.id)
                 return current_player
             else:
-                logging.info("Agent " + str(current_player.id) + ", did not get the card " +  str(card.getCard() + " from player " + str(player_id)))
+                logging.info("Player " + str(player_id) + ", does not have the card " + str(card.getCard()))
                 for player in self.agents.values():
-                    player.AnnouncementNotCard(card, current_player, asked_player)
+                    player.AnnouncementNotCard(card, current_player.id, asked_player.id)
                 return asked_player
 
     def transferCard(self, card, from_player, to_player):
-        to_player.giveCard(card)
         from_player.removeCard(card)
+        to_player.giveCard(card)
+        self.cards_in_play[from_player.id][card.getGroup()].remove(card)
         self.cards_in_play[to_player.id][card.getGroup()].append(card)
-        self.cards_in_play[from_player][card.getGroup()].remove(card)

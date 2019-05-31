@@ -10,6 +10,12 @@ class Card(object):
     def getCard(self):
         return self.card_name
 
+    def __eq__(self, other):
+        if (self.card_name == other.card_name) and (self.group == other.group):
+            return True
+        else:
+            return False
+
     def __str__(self):
         return self.group + ":" + self.card_name
 
