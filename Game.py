@@ -69,7 +69,6 @@ class Game(object):
             time.sleep(2)  # wait 2 seconds for before making another decision
             logging.info("\n-------------------------------------\n")
 
-        #TODO: count score here
         logging.info("scores: " + str(self.scores))
 
     def askingRound(self, current_player):
@@ -79,8 +78,7 @@ class Game(object):
         if (card is None):  # no more card options
             self.agents.pop(current_player.id)
             self.scores[current_player.id] = current_player.getScore()
-            logging.error("FATALITY!!")
-            logging.info("Agent has no more options picking random new player")
+            logging.info("FATALITY!! Agent " + str(current_player.id) + " has no more options, picking random new player")
             if not self.agents.values():
                 logging.info("\n--------------------------------\nGame over!")
                 return False
