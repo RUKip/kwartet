@@ -45,28 +45,28 @@ class Agent(object):
 		self.set_card_for_player(card, self.id, Model.WORLD_DELETED)
 		# TODO: check if group should be deleted as well..
 		# self.model.card_model
-		# self.model.setGroupForPlayer(card, self.id, Model.WORLD_DELETED)
+		# self.set_group_for_player(card, self.id, Model.WORLD_DELETED)
 		self.checkKwartet(card)
 
 	def removeCard(self, card):
 		self.card_set[card.getGroup()].remove(card)
 
-	#TODO: do something with model
-	#This implements the strategy and knowledge based on the announcement
+	# TODO: do something with model
+	# This implements the strategy and knowledge based on the announcement
 	def AnnouncementGaveCard(self, card, asker_id, asked_id):
-		self.model.setCardForPlayer(card, asker_id, Model.WORLD_KNOWN)
-		self.model.setGroupForPlayer(card.getGroup(), asked_id, Model.WORLD_MAYBE)
-		self.model.setGroupForPlayer(card.getGroup(), asker_id, Model.WORLD_KNOWN)
+		self.set_card_for_player(card, asker_id, Model.WORLD_KNOWN)
+		self.set_group_for_player(card, asked_id, Model.WORLD_MAYBE)
+		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
 		for opponent in self.opponents:
 			if(not(opponent == asker_id)):
-				self.model.setCardForPlayer(card, opponent, Model.WORLD_DELETED)
+				self.set_card_for_player(card, opponent, Model.WORLD_DELETED)
 
-	#TODO: do something with model
-	#This implements the strategy and knowledge based on the announcement
+	# TODO: do something with model
+	# This implements the strategy and knowledge based on the announcement
 	def AnnouncementNotCard(self, card, asker_id, asked_id):
-		self.model.setCardForPlayer(card, asker_id, Model.WORLD_DELETED)
-		self.model.setGroupForPlayer(card.getGroup(), asker_id, Model.WORLD_KNOWN)
-		self.model.setCardForPlayer(card, asked_id, Model.WORLD_DELETED)
+		self.set_card_for_player(card, asker_id, Model.WORLD_DELETED)
+		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
+		self.set_card_for_player(card, asked_id, Model.WORLD_DELETED)
 
 	def setModel(self, model):
 		self.model = model
