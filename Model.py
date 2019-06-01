@@ -30,6 +30,14 @@ class Model(object):
         newone.players = copy.deepcopy(self.players, memodict)
         return newone
 
+    def __eq__(self, other):
+        if ((self.group_model == other.group_model) and
+                (self.card_model == other.card_model) and
+                (self.players == self.players)):
+            return True
+        else:
+            return False
+
     def initModel(self):
         file = open(os.path.dirname(os.path.abspath(__file__)) + "/" + self.CARD_DEFINITION_LOCATION, "r")
         for line in file:

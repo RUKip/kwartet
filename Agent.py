@@ -17,6 +17,16 @@ class Agent(object):
 		self.id = id
 		self.opponents = opponents
 
+	def __eq__(self, other):
+		if ((self.card_set == other.card_set) and
+				(self.opponents == other.opponents) and
+				(self.model == other.model) and
+				(self.id == other.id) and
+				(self.score == other.score)):
+			return True
+		else:
+			return False
+
 	def makeDecision(self):
 		return self.getPossiblity()
 
