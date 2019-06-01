@@ -63,23 +63,57 @@ class Agent(object):
 	def removeCard(self, card):
 		self.card_set[card.getGroup()].remove(card)
 
-	# TODO: do something with model
-	# This implements the strategy and knowledge based on the announcement
 	def AnnouncementGaveCard(self, card, asker_id, asked_id):
-		# TODO: some work here..
+		"""
+		After the announcement that player(asked_id) has the card, we update
+		the agent's model. We now know that the player(asker_id) has the
+		requested card and the requested card's group. We also know that the
+		player(asked_id) doesn't have the card anymore, but not sure if he still
+		has cards from that group.
+
+		Args:
+			card: requested card
+			asker_id: player that requested the card
+			asked_id: player that was requested the card
+
+		Returns:
+			Nothing
+
+		"""
+		# Updating model for the player(asked_id)
+		self.set_card_for_player(card, asked_id, Model.WORLD_DELETED)
 		self.set_group_for_player(card, asked_id, Model.WORLD_MAYBE)
+		# Updating model for the player(asker_id)
 		self.set_card_for_player(card, asker_id, Model.WORLD_KNOWN)
 		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
-		for opponent in self.opponents:
-			if(not(opponent == asker_id)):
-				self.set_card_for_player(card, opponent, Model.WORLD_DELETED)
 
-	# TODO: do something with model
-	# This implements the strategy and knowledge based on the announcement
 	def AnnouncementNotCard(self, card, asker_id, asked_id):
-		self.set_card_for_player(card, asker_id, Model.WORLD_DELETED)
-		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
+		"""
+		After the announcement that player(asked_id) does not have a card,
+		we update the agent's model. We know that player(asker_id) has the
+		group of the requested card. We know that player(asked_id) doesn't have
+		that card.
+
+		Args:
+			card: requested card
+			asker_id: player that requested the card
+			asked_id: player that was requested the card
+
+		Returns:
+			Nothing
+		"""
+		# Updating model for the player(asked_id)
 		self.set_card_for_player(card, asked_id, Model.WORLD_DELETED)
+		# Updating model for the player(asker_id)
+		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
+		self.set_card_for_player(card, asker_id, Model.WORLD_DELETED)
+
+	def think(self):
+		"""
+		TODO: function that should be call after each turn. It will do things
+		 like if I know that I don't have a card, but neither has it player 2,
+		 then player 3 must have it
+		"""
 
 	def setModel(self, model):
 		self.model = model
