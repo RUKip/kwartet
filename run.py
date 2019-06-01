@@ -27,7 +27,8 @@ f.close()
 # logging.basicConfig(filename='output.log', filemode='w', level=logging.DEBUG, format='%(message)s')
 logging.basicConfig(filename='output.log',
                     level=logging.DEBUG,
-                    format='%(asctime)s -  %(levelname)s - %(message)s')
+                    format='%(asctime)s - %(message)s')
+# format='%(asctime)s -  %(levelname)s - %(message)s') # to print INFO or DEBUG
 
 
 # define a Handler which writes WARNING messages or higher to the sys.stderr

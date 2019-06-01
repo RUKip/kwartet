@@ -108,12 +108,43 @@ class Agent(object):
 		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
 		self.set_card_for_player(card, asker_id, Model.WORLD_DELETED)
 
-	def think(self):
+	def basic_thinking(self, player_cards):
 		"""
-		TODO: function that should be call after each turn. It will do things
-		 like if I know that I don't have a card, but neither has it player 2,
-		 then player 3 must have it
+		This function simulates basic reasoning that each agent should follow.
+		Such that 'if I know that I have a card, I know others don't'
+
+		Args:
+			player_cards: cards belonging to agent
+
+		Returns:
+			Nothing
+
 		"""
+		# Go through our own cards. Set to deleted those cards in rest of the players's models
+		for group in player_cards:
+			for card in player_cards[group]:
+				for player_id in self.model.players:
+					self.set_card_for_player(card, player_id, Model.WORLD_DELETED)
+
+	def advanced_thinking(self):
+		"""
+		This function simulates more advanced reasoning. Here we could implement
+		guesses on other player's status. This way we could compare how players
+		with different strategies (basic vs. advanced) perform.
+
+		Returns:
+			Nothing
+
+		"""
+		msg = "Player " + str(self.id) + " does not have advanced strategies implemented at the moment.."
+		logging.debug(msg)
+
+		# TODO: if time permits it do some more advanced strategies
+		# E.g. if I am certain that numplayers-1 don't have a card then I know
+		# who has the card
+
+		# E.g. if, I know that a player has a card, then I also know that the
+		# others dont't have it, so adapt model consequently
 
 	def setModel(self, model):
 		self.model = model
@@ -125,7 +156,7 @@ class Agent(object):
 	# TODO: notify all other players that cards are gone could speed up their decision making but not required
 	def checkKwartet(self, latest_added_card):
 		if (len(self.card_set[latest_added_card.getGroup()]) > 3):
-			logging.info("Kwartet! Player " + self.id + " found 4 cards of group " + latest_added_card.getGroup())
+			logging.info("Kwartet! Player " + str(self.id) + " found 4 cards of group " + latest_added_card.getGroup())
 			self.set_group_for_player(latest_added_card, self.id, Model.WORLD_DELETED)
 			for card in self.card_set[latest_added_card.getGroup()]:
 				self.removeCard(card)

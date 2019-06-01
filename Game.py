@@ -68,10 +68,17 @@ class Game(object):
         #play untill no more agents are in the game
         agent = random.choice(list(self.agents.values()))
         logging.info("Player " + str(agent.id) + " is going to start the game")
+        round = 0
         while(agent):
+            round += 1
+            logging.info("-------- Starting round {} --------".format(round))
             agent = self.askingRound(agent)
+            for a in self.agents.values():
+                a.basic_thinking(self.cards_in_play[a.id])
+            # For example, player 1 is an advanced player so:
+            if 1 in self.agents:
+                self.agents[1].advanced_thinking()
             # time.sleep(2)  # wait 2 seconds for before making another decision
-            logging.info("-------- Starting next turn --------")
 
         logging.info("scores: " + str(self.scores))
 
@@ -88,19 +95,19 @@ class Game(object):
                 return False
             return random.choice(list(self.agents.values()))
         else:
-            logging.info("Player " + str(current_player.id) + ", asked player " + str(player_id) + " for card " + str(
+            logging.info("Player " + str(current_player.id) + " asked player " + str(player_id) + " for card " + str(
                 card.getGroup()) + ":" + str(card.getCard()))
             asked_player = self.agents[player_id]
             if card in self.cards_in_play[player_id][card.getGroup()]:
-                logging.info("Player " + str(current_player.id) +
-                             ", gave player " + str(player_id) +
+                logging.info("Player " + str(player_id) +
+                             " gave player " + str(current_player.id) +
                              " the card " + str(card.getCard()))
                 self.transferCard(card, asked_player, current_player)
                 for player in self.agents.values():
                     player.AnnouncementGaveCard(card, current_player.id, asked_player.id)
                 return current_player
             else:
-                logging.info("Player " + str(player_id) + ", does not have the card " + str(card.getCard()))
+                logging.info("Player " + str(player_id) + " does not have the card " + str(card.getCard()))
                 for player in self.agents.values():
                     player.AnnouncementNotCard(card, current_player.id, asked_player.id)
                 return asked_player
