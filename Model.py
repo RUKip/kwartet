@@ -30,6 +30,14 @@ class Model(object):
         newone.players = copy.deepcopy(self.players, memodict)
         return newone
 
+    def __eq__(self, other):
+        if ((self.group_model == other.group_model) and
+                (self.card_model == other.card_model) and
+                (self.players == self.players)):
+            return True
+        else:
+            return False
+
     def initModel(self):
         file = open(os.path.dirname(os.path.abspath(__file__)) + "/" + self.CARD_DEFINITION_LOCATION, "r")
         for line in file:
@@ -49,54 +57,3 @@ class Model(object):
         logging.debug("Initial group model: " + str(self.group_model))
         logging.debug("Initial card model: " + str(self.card_model))
         file.close()
-
-    #returns tuple (Card card, int player_id)
-    def getPossiblity(self, card_set):
-        known_groups, possible_groups = self.getGroupOptions(card_set)
-
-        logging.info("Card set: " + str(card_set))
-        logging.info("Possible groups: " + str(possible_groups) + ", known groups: " + str(known_groups))
-
-        #prioritize known groups
-        if known_groups:
-            known_cards, possible_cards = self.getCardOptions(known_groups)
-            logging.info("Known group - Possible cards: " + str(possible_cards) + ", known cards: " + str(known_cards))
-
-            if known_cards:
-                return random.choice(known_cards)       #ask a know card
-            elif possible_cards:
-                return random.choice(possible_cards)    #ask a possible card with know group
-            raise Exception("Something went wrong, detected a group but no cards available in that group!")
-
-        if possible_groups:
-            _ , possible_cards = self.getCardOptions(possible_groups) #if card is known, group is known so no option of known_card in possible group
-            logging.info("Possible group - Possible cards: " + str(possible_cards))
-            if possible_cards:
-                return random.choice(possible_cards)    #ask a possible card
-        return (None, None) #no more options
-
-    def getGroupOptions(self, card_set):
-        known_groups = []
-        possible_groups = []
-        for group in card_set:
-            for card in card_set[group]:
-                for player in self.players:
-                    if (self.group_model[card.getGroup()][player] == self.WORLD_KNOWN):
-                        known_groups.append((card.getGroup(), player))
-                    elif (self.group_model[card.getGroup()][player] == self.WORLD_MAYBE):
-                        possible_groups.append((card.getGroup(), player))
-        return (known_groups, possible_groups)
-
-    def getCardOptions(self, agent_groups):
-        known_cards = []
-        possible_cards = []
-        for (group, player) in agent_groups:
-            for card in self.card_model[group][player]:
-                if (self.card_model[group][player][card] == self.WORLD_KNOWN):
-                    known_cards.append((Card(group,card), player))
-                elif (self.card_model[group][player][card] == self.WORLD_MAYBE):
-                    possible_cards.append((Card(group,card), player))
-        return (known_cards, possible_cards)
-
-    def setGroupForPlayer(self, group, player_id, operator):
-            self.group_model[group][player_id] = operator

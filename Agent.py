@@ -1,6 +1,8 @@
 import logging
 
 from Model import Model
+from Card import Card
+import random
 
 
 class Agent(object):
@@ -15,8 +17,18 @@ class Agent(object):
 		self.id = id
 		self.opponents = opponents
 
+	def __eq__(self, other):
+		if ((self.card_set == other.card_set) and
+				(self.opponents == other.opponents) and
+				(self.model == other.model) and
+				(self.id == other.id) and
+				(self.score == other.score)):
+			return True
+		else:
+			return False
+
 	def makeDecision(self):
-		return self.model.getPossiblity(self.card_set)
+		return self.getPossiblity()
 
 	def generateInitialModel(self, init_card_set):
 		# Set agent's card to WORLD_DELETED.
@@ -51,22 +63,88 @@ class Agent(object):
 	def removeCard(self, card):
 		self.card_set[card.getGroup()].remove(card)
 
-	# TODO: do something with model
-	# This implements the strategy and knowledge based on the announcement
 	def AnnouncementGaveCard(self, card, asker_id, asked_id):
-		self.set_card_for_player(card, asker_id, Model.WORLD_KNOWN)
-		self.set_group_for_player(card, asked_id, Model.WORLD_MAYBE)
-		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
-		for opponent in self.opponents:
-			if(not(opponent == asker_id)):
-				self.set_card_for_player(card, opponent, Model.WORLD_DELETED)
+		"""
+		After the announcement that player(asked_id) has the card, we update
+		the agent's model. We now know that the player(asker_id) has the
+		requested card and the requested card's group. We also know that the
+		player(asked_id) doesn't have the card anymore, but not sure if he still
+		has cards from that group.
 
-	# TODO: do something with model
-	# This implements the strategy and knowledge based on the announcement
-	def AnnouncementNotCard(self, card, asker_id, asked_id):
-		self.set_card_for_player(card, asker_id, Model.WORLD_DELETED)
-		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
+		Args:
+			card: requested card
+			asker_id: player that requested the card
+			asked_id: player that was requested the card
+
+		Returns:
+			Nothing
+
+		"""
+		# Updating model for the player(asked_id)
 		self.set_card_for_player(card, asked_id, Model.WORLD_DELETED)
+		self.set_group_for_player(card, asked_id, Model.WORLD_MAYBE)
+		# Updating model for the player(asker_id)
+		self.set_card_for_player(card, asker_id, Model.WORLD_KNOWN)
+		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
+
+	def AnnouncementNotCard(self, card, asker_id, asked_id):
+		"""
+		After the announcement that player(asked_id) does not have a card,
+		we update the agent's model. We know that player(asker_id) has the
+		group of the requested card. We know that player(asked_id) doesn't have
+		that card.
+
+		Args:
+			card: requested card
+			asker_id: player that requested the card
+			asked_id: player that was requested the card
+
+		Returns:
+			Nothing
+		"""
+		# Updating model for the player(asked_id)
+		self.set_card_for_player(card, asked_id, Model.WORLD_DELETED)
+		# Updating model for the player(asker_id)
+		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
+		self.set_card_for_player(card, asker_id, Model.WORLD_DELETED)
+
+	def basic_thinking(self, player_cards):
+		"""
+		This function simulates basic reasoning that each agent should follow.
+		Such that 'if I know that I have a card, I know others don't'
+
+		Args:
+			player_cards: cards belonging to agent
+
+		Returns:
+			Nothing
+
+		"""
+		# Go through our own cards. Set to deleted those cards in rest of the players's models
+		for group in player_cards:
+			for card in player_cards[group]:
+				for player_id in self.model.players:
+					self.set_card_for_player(card, player_id, Model.WORLD_DELETED)
+
+	def advanced_thinking(self):
+		"""
+		This function simulates more advanced reasoning. Here we could implement
+		guesses on other player's status. This way we could compare how players
+		with different strategies (basic vs. advanced) perform.
+
+		Returns:
+			Nothing
+
+		"""
+		msg = "Player " + str(self.id) + " does not have advanced strategies implemented at the moment.."
+		logging.debug(msg)
+
+		# TODO: if time permits it do some more advanced strategies
+		# E.g. if I am certain that numplayers-1 don't have a card then I know
+		# who has the card
+
+		# E.g. if, I know that a player has a card, then I also know that the
+		# others dont't have it, so adapt model consequently
 
 	def setModel(self, model):
 		self.model = model
@@ -78,7 +156,7 @@ class Agent(object):
 	# TODO: notify all other players that cards are gone could speed up their decision making but not required
 	def checkKwartet(self, latest_added_card):
 		if (len(self.card_set[latest_added_card.getGroup()]) > 3):
-			logging.info("Kwartet! Player " + self.id + " found 4 cards of group " + latest_added_card.getGroup())
+			logging.info("Kwartet! Player " + str(self.id) + " found 4 cards of group " + latest_added_card.getGroup())
 			self.set_group_for_player(latest_added_card, self.id, Model.WORLD_DELETED)
 			for card in self.card_set[latest_added_card.getGroup()]:
 				self.removeCard(card)
@@ -89,3 +167,53 @@ class Agent(object):
 
 	def set_group_for_player(self, card, player_id, operator):
 		self.model.group_model[card.getGroup()][player_id] = operator
+
+	def getPossiblity(self):
+		known_groups, possible_groups = self.getGroupOptions()
+
+		logging.info("Player card set: " + str(self.card_set))
+		logging.info("Known groups: " + str(known_groups))
+		logging.info("Possible groups: " + str(possible_groups))
+
+		# prioritize known groups
+		if known_groups:
+			known_cards, possible_cards = self.getCardOptions(known_groups)
+			logging.info("Known group - Known cards: " + str(known_cards))
+			logging.info("Known group - Possible cards: " + str(possible_cards))
+
+			if known_cards:
+				return random.choice(known_cards)  # ask a know card
+			elif possible_cards:
+				return random.choice(possible_cards)  # ask a possible card with know group
+			raise Exception("Something went wrong, detected a group but no cards available in that group!")
+
+		if possible_groups:
+			# If card is known, group is known so no option of known_card in possible group
+			_, possible_cards = self.getCardOptions(possible_groups)
+			logging.info("Possible group - Possible cards: " + str(possible_cards))
+			if possible_cards:
+				return random.choice(possible_cards)  # ask a possible card
+		return (None, None)  # no more options
+
+	def getGroupOptions(self):
+		known_groups = []
+		possible_groups = []
+		for group in self.card_set:
+			for card in self.card_set[group]:
+				for player in self.model.players:
+					if self.model.group_model[card.getGroup()][player] == self.model.WORLD_KNOWN:
+						known_groups.append((card.getGroup(), player))
+					elif self.model.group_model[card.getGroup()][player] == self.model.WORLD_MAYBE:
+						possible_groups.append((card.getGroup(), player))
+		return known_groups, possible_groups
+
+	def getCardOptions(self, agent_groups):
+		known_cards = []
+		possible_cards = []
+		for (group, player) in agent_groups:
+			for card in self.model.card_model[group][player]:
+				if self.model.card_model[group][player][card] == self.model.WORLD_KNOWN:
+					known_cards.append((Card(group, card), player))
+				elif self.model.card_model[group][player][card] == self.model.WORLD_MAYBE:
+					possible_cards.append((Card(group, card), player))
+		return known_cards, possible_cards
