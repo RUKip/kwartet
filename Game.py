@@ -59,6 +59,8 @@ class Game(object):
         for agent in self.agents.values():
             agent_card_set = deepcopy(self.cards_in_play[agent.id])
             agent.generateInitialModel(agent_card_set)
+            # TODO: call it here
+            # agent.checkKwartet()
             logging.debug("Opponents for agent " + str(agent.id) + ": " + str(agent.opponents))
             logging.info("Card model for agent " + str(agent.id) + ": " + str(agent.model.card_model))
 
@@ -74,7 +76,7 @@ class Game(object):
             logging.info("-------- Starting round {} --------".format(round))
             agent = self.askingRound(agent)
             for a in self.agents.values():
-                a.basic_thinking(self.cards_in_play[a.id])
+                a.basic_thinking()
             # For example, player 1 is an advanced player so:
             if 1 in self.agents:
                 self.agents[1].advanced_thinking()
@@ -102,9 +104,11 @@ class Game(object):
                 logging.info("Player " + str(player_id) +
                              " gave player " + str(current_player.id) +
                              " the card " + str(card.getCard()))
-                self.transferCard(card, asked_player, current_player)
+                kwartet = self.transferCard(card, asked_player, current_player)
                 for player in self.agents.values():
                     player.AnnouncementGaveCard(card, current_player.id, asked_player.id)
+                    if kwartet:
+                        player.AnnouncementKwartet(card, current_player.id, asked_player.id)
                 return current_player
             else:
                 logging.info("Player " + str(player_id) + " does not have the card " + str(card.getCard()))
@@ -117,3 +121,16 @@ class Game(object):
         to_player.giveCard(card)
         self.cards_in_play[from_player.id][card.getGroup()].remove(card)
         self.cards_in_play[to_player.id][card.getGroup()].append(card)
+        kwartet = to_player.checkKwartet()
+        if kwartet:
+            # TODO: this..
+            # Delete all cards of card.getGroup() from the agents card state
+            group = card.getGroup()
+            for cards in to_player.card_set[group].values()
+                to_player.removeCard(cards)
+            # Delete all cards of card.getGroup() from the agents card state store in Game class
+            self.cards_in_play[to_player.id][card.getGroup()]
+            # Announce kwartet to every player
+            # TODO: those cards are set to Model.WORLD_DELETED
+            to_player.score += 1
+        return kwartet

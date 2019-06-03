@@ -46,7 +46,8 @@ class Agent(object):
 				self.set_card_for_player(card, self.id, Model.WORLD_KNOWN)
 				for opponent_id in self.opponents:
 					self.set_card_for_player(card, opponent_id, Model.WORLD_DELETED)
-				self.checkKwartet(card)
+				# TODO: this checkkwartet should be called from the game 
+				kwartet = self.checkKwartet(card)
 
 	def askCard(self):
 		(card,player) = self.model.getPossiblity(self.card_set)
@@ -54,11 +55,6 @@ class Agent(object):
 
 	def giveCard(self, card):
 		self.card_set[card.getGroup()].append(card)
-		self.set_card_for_player(card, self.id, Model.WORLD_DELETED)
-		# TODO: check if group should be deleted as well..
-		# self.model.card_model
-		# self.set_group_for_player(card, self.id, Model.WORLD_DELETED)
-		self.checkKwartet(card)
 
 	def removeCard(self, card):
 		self.card_set[card.getGroup()].remove(card)
@@ -108,7 +104,7 @@ class Agent(object):
 		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
 		self.set_card_for_player(card, asker_id, Model.WORLD_DELETED)
 
-	def basic_thinking(self, player_cards):
+	def basic_thinking(self):
 		"""
 		This function simulates basic reasoning that each agent should follow.
 		Such that 'if I know that I have a card, I know others don't'
@@ -121,6 +117,7 @@ class Agent(object):
 
 		"""
 		# Go through our own cards. Set to deleted those cards in rest of the players's models
+		player_cards = self.card_set
 		for group in player_cards:
 			for card in player_cards[group]:
 				for player_id in self.model.players:
@@ -157,10 +154,10 @@ class Agent(object):
 	def checkKwartet(self, latest_added_card):
 		if (len(self.card_set[latest_added_card.getGroup()]) > 3):
 			logging.info("Kwartet! Player " + str(self.id) + " found 4 cards of group " + latest_added_card.getGroup())
-			self.set_group_for_player(latest_added_card, self.id, Model.WORLD_DELETED)
-			for card in self.card_set[latest_added_card.getGroup()]:
-				self.removeCard(card)
-			self.score += 1
+			# self.set_group_for_player(latest_added_card, self.id, Model.WORLD_DELETED)
+			# for card in self.card_set[latest_added_card.getGroup()]:
+				# self.removeCard(card)
+			# self.score += 1
 
 	def set_card_for_player(self, card, player_id, operator):
 		self.model.card_model[card.getGroup()][player_id][card.getCard()] = operator
