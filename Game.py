@@ -98,9 +98,6 @@ class Game(object):
 
     def askingRound(self, current_player):
         logging.info("Starting a question round for player " + str(current_player.id) + ": ")
-        for a in self.agents.values():
-            logging.debug("Cards (in Agent object) for player " + str(a.id) + " :" + str(a.card_set))
-        logging.debug("Cards (in Game object) " + str(self.cards_in_play))
         (card, player_id) = current_player.makeDecision()
         logging.debug("Card choice: " + str(card) + ", to player: " + str(player_id))
         if (card is None):  # no more card options
@@ -118,7 +115,14 @@ class Game(object):
                 card.getGroup()) + ":" + str(card.getCard()))
             if not(player_id in self.agents.keys()):
                 # TODO: basically, it crashes because we try to index an agent that does not exist anymore..
-                aux = True
+                logging.debug("ERROR: player " + str(player_id) + " is no longer in the game")
+                for a in self.agents.values():
+                    logging.debug("Cards (in Agent object) for player " + str(a.id) + " :" + str(a.card_set))
+                logging.debug("Cards (in Game object) " + str(self.cards_in_play))
+                for a in self.agents.values():
+                    logging.debug("Player " + str(a.id) + " card model: " + str(a.model.card_model))
+                    logging.debug("Player " + str(a.id) + " group model: " + str(a.model.group_model))
+
             asked_player = self.agents[player_id]  # TODO: PROBLEM SEEN HERE
             if card in self.cards_in_play[player_id][card.getGroup()]:
                 logging.info("Player " + str(player_id) +
