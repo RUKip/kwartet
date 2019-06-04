@@ -115,17 +115,8 @@ class Game(object):
         else:
             logging.info("Player " + str(current_player.id) + " asked player " + str(player_id) + " for card " + str(
                 card.getGroup()) + ":" + str(card.getCard()))
-            if not(player_id in self.agents.keys()):
-                # TODO: basically, it crashes because we try to index an agent that does not exist anymore..
-                logging.debug("ERROR: player " + str(player_id) + " is no longer in the game")
-                for a in self.agents.values():
-                    logging.debug("Cards (in Agent object) for player " + str(a.id) + " :" + str(a.card_set))
-                logging.debug("Cards (in Game object) " + str(self.cards_in_play))
-                for a in self.agents.values():
-                    logging.debug("Player " + str(a.id) + " card model: " + str(a.model.card_model))
-                    logging.debug("Player " + str(a.id) + " group model: " + str(a.model.group_model))
 
-            asked_player = self.agents[player_id]  # TODO: PROBLEM SEEN HERE
+            asked_player = self.agents[player_id]
             if card in self.cards_in_play[player_id][card.getGroup()]:
                 logging.info("Player " + str(player_id) +
                              " gave player " + str(current_player.id) +
