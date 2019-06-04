@@ -117,8 +117,9 @@ class Game(object):
             logging.info("Player " + str(current_player.id) + " asked player " + str(player_id) + " for card " + str(
                 card.getGroup()) + ":" + str(card.getCard()))
             if not(player_id in self.agents.keys()):
+                # TODO: basically, it crashes because we try to index an agent that does not exist anymore..
                 aux = True
-            asked_player = self.agents[player_id]
+            asked_player = self.agents[player_id]  # TODO: PROBLEM SEEN HERE
             if card in self.cards_in_play[player_id][card.getGroup()]:
                 logging.info("Player " + str(player_id) +
                              " gave player " + str(current_player.id) +
