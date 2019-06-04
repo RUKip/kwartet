@@ -150,6 +150,12 @@ class Agent(object):
 			for card in player_cards[group]:
 				for player_id in self.model.players:
 					self.set_card_for_player(card, player_id, Model.WORLD_DELETED)
+		# Go through everyone's card status. If anybody has 4 Model.WORLD_DELETED, then group deleted.
+		for group in self.model.card_model.keys():
+			for player in self.model.card_model[group].keys():
+				aux = sum(self.model.card_model[group][player].values())
+				if aux == -4:
+					self.model.group_model[group][player] = self.model.WORLD_DELETED
 
 	def advanced_thinking(self):
 		"""
@@ -218,17 +224,34 @@ class Agent(object):
 			# If card is known, group is known so no option of known_card in possible group
 			_, possible_cards = self.getCardOptions(possible_groups)
 			logging.info("Possible group - Possible cards: " + str(possible_cards))
+
 		if possible_cards:
 			return random.choice(possible_cards)  # ask a possible card
 
-		elif len(self.card_set) > 0:
-			# If our current knowledge model tells us that players don't have cards or groups, but we still have cards
-			rand_group = random.choice(self.card_set.keys())
-			rand_card = random.choice(self.card_set[rand_group].values())
-			rand_player = random.choice(self.opponents)
-			return Card(rand_group, rand_card)
-
-		return (None, None)  # no more options
+		else:
+			aux = False
+			# check if player still has cards
+			for group in self.card_set.keys():
+				if len(self.card_set[group]) > 0:
+					aux = True
+					break
+			if aux:
+				logging.debug("There is some confusion. there are some possible groups but no possible cards.")
+				# If our current knowledge model tells us that players don't have cards or groups, but we still have cards
+				avail_groups = []  # groups that could be requested
+				for group in self.card_set.keys():
+					if len(self.card_set[group]) > 0:
+						avail_groups.append(group)
+				rand_group = random.choice(avail_groups)
+				avail_cards = []  # cards that we do not own
+				for card in self.model.card_model[rand_group][self.id].keys():
+					if self.model.card_model[rand_group][self.id][card] == Model.WORLD_DELETED:
+						avail_cards.append(card)
+				rand_card = random.choice(avail_cards)
+				rand_player = random.choice(self.opponents)
+				return Card(rand_group, rand_card), rand_player
+			else:
+				return (None, None)  # no more options
 
 	def getGroupOptions(self):
 		known_groups = []

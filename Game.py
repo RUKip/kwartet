@@ -98,6 +98,9 @@ class Game(object):
 
     def askingRound(self, current_player):
         logging.info("Starting a question round for player " + str(current_player.id) + ": ")
+        for a in self.agents.values():
+            logging.debug("Cards (in Agent object) for player " + str(a.id) + " :" + str(a.card_set))
+        logging.debug("Cards (in Game object) " + str(self.cards_in_play))
         (card, player_id) = current_player.makeDecision()
         logging.debug("Card choice: " + str(card) + ", to player: " + str(player_id))
         if (card is None):  # no more card options
