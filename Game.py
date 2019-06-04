@@ -10,9 +10,9 @@ import random
 
 class Game(object):
 
-    agents = {}
-    cards_in_play = {}
-    scores = {}
+    agents = {}         #{agent_id => Agent}
+    cards_in_play = {}  #{agent_id => {group => [Cards]}}
+    scores = {}         #{agent_id => score}
 
     def initGame(self):
         player_cnt = 3
@@ -109,13 +109,11 @@ class Game(object):
             if not self.agents.values():
                 logging.info("\n--------------------------------\nGame over!")
                 return False
-            for agent in self.agents.values():
-                agent.sorrowPlayer(current_player.id)
+            self.outOfGame(current_player.id)
             return random.choice(list(self.agents.values()))
         else:
             logging.info("Player " + str(current_player.id) + " asked player " + str(player_id) + " for card " + str(
                 card.getGroup()) + ":" + str(card.getCard()))
-
             asked_player = self.agents[player_id]
             if card in self.cards_in_play[player_id][card.getGroup()]:
                 logging.info("Player " + str(player_id) +
@@ -131,12 +129,15 @@ class Game(object):
                     player.AnnouncementNotCard(card, current_player.id, asked_player.id)
                 return asked_player
 
-    #TODO: doesnt check if from_player after transfer is empty, thus still possible for everyone
     def transferCard(self, card, from_player, to_player):
         from_player.removeCard(card)
         to_player.giveCard(card)
         self.cards_in_play[from_player.id][card.getGroup()].remove(card)
         self.cards_in_play[to_player.id][card.getGroup()].append(card)
+        if self.hasEmptyHand(from_player.id):
+            logging.info("Another death claimed by kwartet, Player " + str(from_player.id) + " is out of cards")
+            self.outOfGame(from_player.id)
+
         kwartet_group = to_player.checkKwartet()
         if len(kwartet_group) > 0:
             for group in kwartet_group:
@@ -145,3 +146,14 @@ class Game(object):
                 to_player.score += 1
                 for opponent in to_player.opponents:
                     self.agents[opponent].AnnouncementKwartet(group)
+
+    def hasEmptyHand(self, player_id):
+        for group in self.cards_in_play[player_id]:
+            if(self.cards_in_play[player_id][group]):
+               return False
+        return True
+
+    def outOfGame(self, player_id):
+        for agent in self.agents.values():
+            agent.sorrowPlayer(player_id)
+
