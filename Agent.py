@@ -275,3 +275,11 @@ class Agent(object):
 				elif self.model.card_model[group][player][card] == self.model.WORLD_MAYBE:
 					possible_cards.append((Card(group, card), player))
 		return known_cards, possible_cards
+
+	#We just need to delete group model as this is vital to picking from card_model
+	def sorrowPlayer(self, dead_player_id):
+		for group in self.model.group_model:
+			for player in self.model.group_model[group]:
+				if player == dead_player_id:
+					self.model.group_model[group][player] = Model.WORLD_DELETED
+		logging.info("Player " + str(self.id) + " now knows player " + str(dead_player_id) + " sleeps with the fishes. RIP")

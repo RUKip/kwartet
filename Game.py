@@ -109,6 +109,8 @@ class Game(object):
             if not self.agents.values():
                 logging.info("\n--------------------------------\nGame over!")
                 return False
+            for agent in self.agents.values():
+                agent.sorrowPlayer(current_player.id)
             return random.choice(list(self.agents.values()))
         else:
             logging.info("Player " + str(current_player.id) + " asked player " + str(player_id) + " for card " + str(
@@ -138,6 +140,7 @@ class Game(object):
                     player.AnnouncementNotCard(card, current_player.id, asked_player.id)
                 return asked_player
 
+    #TODO: doesnt check if from_player after transfer is empty, thus still possible for everyone
     def transferCard(self, card, from_player, to_player):
         from_player.removeCard(card)
         to_player.giveCard(card)
