@@ -257,11 +257,12 @@ class Agent(object):
 		known_groups = []
 		possible_groups = []
 		for group in self.card_set:
-			for player in self.model.players:
-				if self.model.group_model[group][player] == self.model.WORLD_KNOWN:
-					known_groups.append((group, player))
-				elif self.model.group_model[group][player] == self.model.WORLD_MAYBE:
-					possible_groups.append((group, player))
+			if self.card_set[group]:
+				for player in self.model.players:
+					if self.model.group_model[group][player] == self.model.WORLD_KNOWN:
+						known_groups.append((group, player))
+					elif self.model.group_model[group][player] == self.model.WORLD_MAYBE:
+						possible_groups.append((group, player))
 		return known_groups, possible_groups
 
 	def getCardOptions(self, agent_groups):
