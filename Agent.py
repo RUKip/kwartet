@@ -46,8 +46,6 @@ class Agent(object):
 				self.set_card_for_player(card, self.id, Model.WORLD_KNOWN)
 				for opponent_id in self.opponents:
 					self.set_card_for_player(card, opponent_id, Model.WORLD_DELETED)
-				# TODO: this checkkwartet should be called from the game 
-				kwartet = self.checkKwartet(card)
 
 	def askCard(self):
 		(card,player) = self.model.getPossiblity(self.card_set)
@@ -58,6 +56,12 @@ class Agent(object):
 
 	def removeCard(self, card):
 		self.card_set[card.getGroup()].remove(card)
+
+	def remove_group(self, group):
+		self.card_set[group].clear()
+		self.model.group_model[group][self.id] = Model.WORLD_DELETED
+		for card in self.model.card_model[group][self.id]:
+			self.set_card_for_player(Card(group, card), self.id, Model.WORLD_DELETED)
 
 	def AnnouncementGaveCard(self, card, asker_id, asked_id):
 		"""
@@ -103,6 +107,30 @@ class Agent(object):
 		# Updating model for the player(asker_id)
 		self.set_group_for_player(card, asker_id, Model.WORLD_KNOWN)
 		self.set_card_for_player(card, asker_id, Model.WORLD_DELETED)
+
+	def AnnouncementKwartet(self, group):
+		"""
+		This announcement is done after a player gather 4 cards of same type (Kwartet).
+		The other players know that cards belonging to that group are not possible anymore
+
+		Args:
+			group: card group
+
+		Returns:
+			Nothing
+
+		"""
+		# Delete cards and group from own model
+		# Shouldn't be necessary, bc they should already be set to deleted,
+		# but just in case... also, this would be useful if we implement forgetting.
+		self.model.group_model[group][self.id] = Model.WORLD_DELETED
+		for card in self.model.card_model[group][self.id]:
+			self.set_card_for_player(Card(group, card), self.id, Model.WORLD_DELETED)
+		# Delete cards and group from opponents models
+		for opponent in self.opponents:
+			self.model.group_model[group][opponent] = Model.WORLD_DELETED
+			for card in self.model.card_model[group][opponent]:
+				self.set_card_for_player(Card(group, card), opponent, Model.WORLD_DELETED)
 
 	def basic_thinking(self):
 		"""
@@ -150,14 +178,15 @@ class Agent(object):
 	def getScore(self):
 		return self.score
 
-	# TODO: notify all other players that cards are gone could speed up their decision making but not required
-	def checkKwartet(self, latest_added_card):
-		if (len(self.card_set[latest_added_card.getGroup()]) > 3):
-			logging.info("Kwartet! Player " + str(self.id) + " found 4 cards of group " + latest_added_card.getGroup())
-			# self.set_group_for_player(latest_added_card, self.id, Model.WORLD_DELETED)
-			# for card in self.card_set[latest_added_card.getGroup()]:
-				# self.removeCard(card)
-			# self.score += 1
+	def checkKwartet(self):
+		kwarter_group = []
+		for group in self.card_set:
+			if len(self.card_set[group]) > 3:
+				logging.info("Kwartet! Player " + str(self.id) +
+							 " found 4 cards of group " +
+							 str(group))
+				kwarter_group.append(str(group))
+		return kwarter_group
 
 	def set_card_for_player(self, card, player_id, operator):
 		self.model.card_model[card.getGroup()][player_id][card.getCard()] = operator
@@ -172,6 +201,7 @@ class Agent(object):
 		logging.info("Known groups: " + str(known_groups))
 		logging.info("Possible groups: " + str(possible_groups))
 
+		possible_cards = []
 		# prioritize known groups
 		if known_groups:
 			known_cards, possible_cards = self.getCardOptions(known_groups)
@@ -184,24 +214,31 @@ class Agent(object):
 				return random.choice(possible_cards)  # ask a possible card with know group
 			raise Exception("Something went wrong, detected a group but no cards available in that group!")
 
-		if possible_groups:
+		elif possible_groups:
 			# If card is known, group is known so no option of known_card in possible group
 			_, possible_cards = self.getCardOptions(possible_groups)
 			logging.info("Possible group - Possible cards: " + str(possible_cards))
-			if possible_cards:
-				return random.choice(possible_cards)  # ask a possible card
+		if possible_cards:
+			return random.choice(possible_cards)  # ask a possible card
+
+		elif len(self.card_set) > 0:
+			# If our current knowledge model tells us that players don't have cards or groups, but we still have cards
+			rand_group = random.choice(self.card_set.keys())
+			rand_card = random.choice(self.card_set[rand_group].values())
+			rand_player = random.choice(self.opponents)
+			return Card(rand_group, rand_card)
+
 		return (None, None)  # no more options
 
 	def getGroupOptions(self):
 		known_groups = []
 		possible_groups = []
 		for group in self.card_set:
-			for card in self.card_set[group]:
-				for player in self.model.players:
-					if self.model.group_model[card.getGroup()][player] == self.model.WORLD_KNOWN:
-						known_groups.append((card.getGroup(), player))
-					elif self.model.group_model[card.getGroup()][player] == self.model.WORLD_MAYBE:
-						possible_groups.append((card.getGroup(), player))
+			for player in self.model.players:
+				if self.model.group_model[group][player] == self.model.WORLD_KNOWN:
+					known_groups.append((group, player))
+				elif self.model.group_model[group][player] == self.model.WORLD_MAYBE:
+					possible_groups.append((group, player))
 		return known_groups, possible_groups
 
 	def getCardOptions(self, agent_groups):

@@ -15,7 +15,7 @@ class Game(object):
     scores = {}
 
     def initGame(self):
-        player_cnt = None
+        player_cnt = 3
         while player_cnt is None:
             try:
                 player_cnt = int(input("How many players?: "))
@@ -55,12 +55,24 @@ class Game(object):
                 random_card = Card(group, name)
                 self.cards_in_play[agent_id][group].append(random_card)
 
-        #intialize agent specific models
+        # Initialize agent specific models
         for agent in self.agents.values():
             agent_card_set = deepcopy(self.cards_in_play[agent.id])
             agent.generateInitialModel(agent_card_set)
-            # TODO: call it here
-            # agent.checkKwartet()
+
+        # I have to do the loop here bc the opponent models are not initialized
+        # in the previous loop iterations
+        for agent in self.agents.values():
+            kwartet_group = agent.checkKwartet()
+            # kwartet_group.append("farm_animals")
+            if len(kwartet_group) > 0:
+                for group in kwartet_group:
+                    agent.remove_group(group)
+                    self.cards_in_play[agent.id][group].clear()
+                    agent.score += 1
+                    for opponent in agent.opponents:
+                        self.agents[opponent].AnnouncementKwartet(group)
+
             logging.debug("Opponents for agent " + str(agent.id) + ": " + str(agent.opponents))
             logging.info("Card model for agent " + str(agent.id) + ": " + str(agent.model.card_model))
 
@@ -90,6 +102,8 @@ class Game(object):
         logging.debug("Card choice: " + str(card) + ", to player: " + str(player_id))
         if (card is None):  # no more card options
             self.agents.pop(current_player.id)
+            for a in self.agents.values():
+                a.opponents.remove(current_player.id)
             self.scores[current_player.id] = current_player.getScore()
             logging.info("FATALITY!! Player " + str(current_player.id) + " has no more options, picking random new player")
             if not self.agents.values():
@@ -99,16 +113,16 @@ class Game(object):
         else:
             logging.info("Player " + str(current_player.id) + " asked player " + str(player_id) + " for card " + str(
                 card.getGroup()) + ":" + str(card.getCard()))
+            if not(player_id in self.agents.keys()):
+                aux = True
             asked_player = self.agents[player_id]
             if card in self.cards_in_play[player_id][card.getGroup()]:
                 logging.info("Player " + str(player_id) +
                              " gave player " + str(current_player.id) +
                              " the card " + str(card.getCard()))
-                kwartet = self.transferCard(card, asked_player, current_player)
                 for player in self.agents.values():
                     player.AnnouncementGaveCard(card, current_player.id, asked_player.id)
-                    if kwartet:
-                        player.AnnouncementKwartet(card, current_player.id, asked_player.id)
+                self.transferCard(card, asked_player, current_player)
                 return current_player
             else:
                 logging.info("Player " + str(player_id) + " does not have the card " + str(card.getCard()))
@@ -121,16 +135,11 @@ class Game(object):
         to_player.giveCard(card)
         self.cards_in_play[from_player.id][card.getGroup()].remove(card)
         self.cards_in_play[to_player.id][card.getGroup()].append(card)
-        kwartet = to_player.checkKwartet()
-        if kwartet:
-            # TODO: this..
-            # Delete all cards of card.getGroup() from the agents card state
-            group = card.getGroup()
-            for cards in to_player.card_set[group].values()
-                to_player.removeCard(cards)
-            # Delete all cards of card.getGroup() from the agents card state store in Game class
-            self.cards_in_play[to_player.id][card.getGroup()]
-            # Announce kwartet to every player
-            # TODO: those cards are set to Model.WORLD_DELETED
-            to_player.score += 1
-        return kwartet
+        kwartet_group = to_player.checkKwartet()
+        if len(kwartet_group) > 0:
+            for group in kwartet_group:
+                to_player.remove_group(group)
+                self.cards_in_play[to_player.id][group].clear()
+                to_player.score += 1
+                for opponent in to_player.opponents:
+                    self.agents[opponent].AnnouncementKwartet(group)
