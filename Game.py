@@ -1,11 +1,12 @@
 import time
 from copy import deepcopy
 import logging
+import random
 
 from Agent import Agent
 from Card import Card
 from Model import Model
-import random
+import GraphPrinting
 
 
 class Game(object):
@@ -93,6 +94,10 @@ class Game(object):
             if 1 in self.agents:
                 self.agents[1].advanced_thinking()
             # time.sleep(2)  # wait 2 seconds for before making another decision
+
+            # Let's print some graphs..
+            filename = "output-graphs/" + "round-" + str(round) + "_agent-" + str(agent.id)
+            GraphPrinting.create_graph(agent, filename)
 
         logging.info("scores: " + str(self.scores))
 
