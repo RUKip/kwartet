@@ -167,7 +167,7 @@ class Agent(object):
 			Nothing
 
 		"""
-		msg = "Player " + str(self.id) + " does not have advanced strategies implemented at the moment.."
+		msg = "Player " + str(self.id) + " does not yet have advanced strategies implemented at the moment.."
 		logging.debug(msg)
 
 		# TODO: if time permits it do some more advanced strategies
