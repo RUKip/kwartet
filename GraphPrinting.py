@@ -1,58 +1,46 @@
-import pydot
-import cv2 as cv
+from graphviz import Graph
 
 from Model import Model
 
 
 def create_graph(agent, filename):
     color_mapping = {Model.WORLD_KNOWN: 'green', Model.WORLD_MAYBE: 'lightsalmon3', Model.WORLD_DELETED: 'red4'}
-    filename = "output-graphs/borrar.svg"
-    # filename = filename + '.svg'  # Just for now TODO: delete this
+    filename = "output-graphs/borrar.png"
     card_model = agent.model.card_model
     group_model = agent.model.group_model
-    groups = group_model.keys()
-    n_groups = len(groups)
 
-    graph = pydot.Dot(graph_type='graph', rankdir='LR')
+    # g = Graph('G', filename='process.gv', engine='sfdp', format='x11')
+    g = Graph(name='knowledge_model', filename='knowledge_model.gv', format='x11')
+    g.attr(compound='true', rankdir='TB')
+    # g.attr(compound='true')
 
+    with g.subgraph(name='group-player') as s:
+        for group in group_model.keys():
+            s.edge("Player " + str(agent.id) + " model", group)
+            for player in card_model[group].keys():
+                g.node(group + "-Player " + str(player), label="Player " + str(player))
+                g.edge(group, group + "-Player " + str(player))
 
-    # group = "farm_animals"
+    with g.subgraph(name='player-card') as s:
+        for group in group_model.keys():
+            for player in card_model[group].keys():
+                for card in card_model[group][player].keys():
+                    node_name = str(player) + "-" + card
+                    color = color_mapping[card_model[group][player][card]]
+                    g.attr('node', style='filled', fillcolor=color)
+                    g.node(node_name, label=card)
 
+    # Create connections between subgraphs
     for group in group_model.keys():
-        graph.add_edge(pydot.Edge("Player " + str(agent.id) + " model", group))
         for player in card_model[group].keys():
-            node_player = pydot.Node(group + "-Player " + str(player), label="Player " + str(player))
-            edge = pydot.Edge(group, node_player)
-            graph.add_edge(edge)
             for card in card_model[group][player].keys():
-                node_name = str(player) + "-" + card
-                color = color_mapping[card_model[group][player][card]]
-                node = pydot.Node(node_name, style="filled", fillcolor=color, label=card)
-                # card_nodes.append(node)
-                graph.add_node(node)
-                edge = pydot.Edge(node_player, node_name)
-                graph.add_edge(edge)
+                g.edge(group + "-Player " + str(player), str(player) + "-" + card)
+    g.view(quiet=True)
 
-    # for n in card_nodes:
-    #     node, edge = n
-    #     graph.add_node(node)
-    #     graph.add_edge(edge)
+    # g.render('test-output/round-table.gv', view=True)
+    # g.render(view=True)
 
-    graph.write_svg(filename)
-
+    # time.sleep(1)
+    # g.attr('node', color='red', style='filled')
 
     print("Bye")
-
-
-
-
-
-
-
-    # for group in group_model.keys():
-    #     for player in card_model[group].keys():
-    #         edge = pydot.Edge(group, "Player " + str(player))
-    #         graph.add_edge(edge)
-    #         for card in card_model[group][player].keys():
-    #             color = color_mapping[card_model[group][player][card]]
-    #             graph.add_edge(pydot.Edge("Player " + str(player), card, color=color))
