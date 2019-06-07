@@ -48,13 +48,16 @@ class Game(object):
                 for agent_id in self.agents:
                     self.cards_in_play[agent_id][group] = []
 
-        while(len(all_cards)>1):
+        while(len(all_cards)>=1):
             for agent_id in self.agents:
+                # might happen if not every agent gets the same amount of cards
+                if len(all_cards)<1:
+                    break
                 (group, name) = random.choice(all_cards)
                 all_cards.remove((group,name))
                 random_card = Card(group, name)
                 self.cards_in_play[agent_id][group].append(random_card)
-
+                
         # Initialize agent specific models
         for agent in self.agents.values():
             agent_card_set = deepcopy(self.cards_in_play[agent.id])
