@@ -79,6 +79,11 @@ class Game(object):
 
         logging.info("Players card division is: " + str(self.cards_in_play))
 
+        for a in self.agents.values():
+            filename = "Initial-model"
+            GraphPrinting.create_graph(a, filename)
+
+
     def startGame(self):
         #play untill no more agents are in the game
         agent = random.choice(list(self.agents.values()))
@@ -87,17 +92,16 @@ class Game(object):
         while(agent):
             round += 1
             logging.info("-------- Starting round {} --------".format(round))
+            # Let's print some graphs..
+            filename = "round-" + str(round)
+            GraphPrinting.create_graph(agent, filename)
+
             agent = self.askingRound(agent)
             for a in self.agents.values():
                 a.basic_thinking()
             # For example, player 1 is an advanced player so:
             if 1 in self.agents:
                 self.agents[1].advanced_thinking()
-            # time.sleep(2)  # wait 2 seconds for before making another decision
-
-            # Let's print some graphs..
-            filename = "output-graphs/" + "round-" + str(round) + "_agent-" + str(agent.id)
-            GraphPrinting.create_graph(agent, filename)
 
         logging.info("scores: " + str(self.scores))
 
