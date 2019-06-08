@@ -94,7 +94,8 @@ class Game(object):
             logging.info("-------- Starting round {} --------".format(round))
             # Let's print some graphs..
             filename = "round-" + str(round)
-            GraphPrinting.create_graph(agent, filename)
+            for a in self.agents.values():
+                GraphPrinting.create_graph(a, filename)
 
             agent = self.askingRound(agent)
             for a in self.agents.values():
