@@ -14,23 +14,12 @@ class Game(object):
     cards_in_play = {}  #{agent_id => {group => [Cards]}}
     scores = {}         #{agent_id => score}
 
-    def initGame(self):
-        player_cnt = 3
-        while player_cnt is None:
-            try:
-                player_cnt = int(input("How many players?: "))
-                if(player_cnt<1):
-                    print("Too small player count!")
-                    player_cnt = None
-            except:
-                print("Not valid, try a different number")
-                pass
-
-        #create initial model
+    def initGame(self, player_cnt):
+        # create initial model
         model = Model(player_cnt)
         model.initModel()
 
-        #create agents and set model
+        # create agents and set model
         for x in range(1, player_cnt+1):
             opponents = list(range(1, player_cnt+1))
             opponents.remove(x)
@@ -48,13 +37,16 @@ class Game(object):
                 for agent_id in self.agents:
                     self.cards_in_play[agent_id][group] = []
 
-        while(len(all_cards)>1):
+        while(len(all_cards)>=1):
             for agent_id in self.agents:
+                # might happen if not every agent gets the same amount of cards
+                if len(all_cards)<1:
+                    break
                 (group, name) = random.choice(all_cards)
                 all_cards.remove((group,name))
                 random_card = Card(group, name)
                 self.cards_in_play[agent_id][group].append(random_card)
-
+                
         # Initialize agent specific models
         for agent in self.agents.values():
             agent_card_set = deepcopy(self.cards_in_play[agent.id])
@@ -95,6 +87,14 @@ class Game(object):
             # time.sleep(2)  # wait 2 seconds for before making another decision
 
         logging.info("scores: " + str(self.scores))
+        return self.scores
+        # print scores
+        # ~ print("scores: " + str(self.scores)) 
+        # ~ print(self.scores[1])
+        # ~ print(self.scores[2])
+        # ~ print(self.scores[3])
+        # ~ print(self.scores[4])
+        # ~ print(self.scores[5])
 
     def askingRound(self, current_player):
         logging.info("Starting a question round for player " + str(current_player.id) + ": ")
