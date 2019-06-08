@@ -1,11 +1,12 @@
 import time
 from copy import deepcopy
 import logging
+import random
 
 from Agent import Agent
 from Card import Card
 from Model import Model
-import random
+import GraphPrinting
 
 
 class Game(object):
@@ -70,6 +71,11 @@ class Game(object):
 
         logging.info("Players card division is: " + str(self.cards_in_play))
 
+        for a in self.agents.values():
+            filename = "Initial-model"
+            GraphPrinting.create_graph(a, filename)
+
+
     def startGame(self):
         #play untill no more agents are in the game
         agent = random.choice(list(self.agents.values()))
@@ -78,13 +84,17 @@ class Game(object):
         while(agent):
             round += 1
             logging.info("-------- Starting round {} --------".format(round))
+            # Let's print some graphs..
+            filename = "round-" + str(round)
+            for a in self.agents.values():
+                GraphPrinting.create_graph(a, filename)
+
             agent = self.askingRound(agent)
             for a in self.agents.values():
                 a.basic_thinking()
             # For example, player 1 is an advanced player so:
             if 1 in self.agents:
                 self.agents[1].advanced_thinking()
-            # time.sleep(2)  # wait 2 seconds for before making another decision
 
         logging.info("scores: " + str(self.scores))
         return self.scores
