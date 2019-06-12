@@ -3,7 +3,7 @@ from copy import deepcopy
 import logging
 import random
 
-from Agent import Agent
+from ComputerAgent import ComputerAgent
 from Card import Card
 from Model import Model
 import GraphPrinting
@@ -15,6 +15,9 @@ class Game(object):
     cards_in_play = {}  #{agent_id => {group => [Cards]}}
     scores = {}         #{agent_id => score}
 
+    def __init__(self, has_human_player):
+        self.hasHuman = has_human_player
+
     def initGame(self, player_cnt):
         # create initial model
         model = Model(player_cnt)
@@ -24,10 +27,13 @@ class Game(object):
         for x in range(1, player_cnt+1):
             opponents = list(range(1, player_cnt+1))
             opponents.remove(x)
-            agent = Agent(x, opponents)
+            agent = ComputerAgent(x, opponents)
             agent.setModel(deepcopy(model))
             self.agents[x] = agent
             self.cards_in_play[agent.id] = {}
+
+        #if self.hasHuman:
+            #self.agents[player_cnt] = HumanAgent()
 
         # divide cards randomly over agents
         all_groups = model.group_model.keys()
@@ -57,7 +63,6 @@ class Game(object):
         # in the previous loop iterations
         for agent in self.agents.values():
             kwartet_group = agent.checkKwartet()
-            # kwartet_group.append("farm_animals")
             if len(kwartet_group) > 0:
                 for group in kwartet_group:
                     agent.remove_group(group)
@@ -84,27 +89,18 @@ class Game(object):
         while(agent):
             round += 1
             logging.info("-------- Starting round {} --------".format(round))
-            # Let's print some graphs..
-            filename = "round-" + str(round)
-            for a in self.agents.values():
-                GraphPrinting.create_graph(a, filename)
 
+            self.print_agent_graphs(round)
             agent = self.askingRound(agent)
+
+            #Do some reasoning (all agents)
             for a in self.agents.values():
                 a.basic_thinking()
-            # For example, player 1 is an advanced player so:
-            if 1 in self.agents:
-                self.agents[1].advanced_thinking()
+
+            self.applyReasoningStrategies()
 
         logging.info("scores: " + str(self.scores))
         return self.scores
-        # print scores
-        # ~ print("scores: " + str(self.scores)) 
-        # ~ print(self.scores[1])
-        # ~ print(self.scores[2])
-        # ~ print(self.scores[3])
-        # ~ print(self.scores[4])
-        # ~ print(self.scores[5])
 
     def askingRound(self, current_player):
         logging.info("Starting a question round for player " + str(current_player.id) + ": ")
@@ -167,3 +163,13 @@ class Game(object):
         for agent in self.agents.values():
             agent.sorrowPlayer(player_id)
 
+
+    def print_agent_graphs(self, round):
+        # Let's print some graphs..
+        filename = "round-" + str(round)
+        for a in self.agents.values():
+            GraphPrinting.create_graph(a, filename)
+
+    def applyReasoningStrategies(self):
+        if 1 in self.agents:  # If we have a player 1, it is an advanced player:
+            self.agents[1].advanced_thinking()

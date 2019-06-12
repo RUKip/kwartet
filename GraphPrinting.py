@@ -14,7 +14,7 @@ def create_graph(agent, filename, on_line_view=False):
     card_model = agent.model.card_model
     group_model = agent.model.group_model
 
-    g = Graph(name=filename, directory=path, format=format)
+    g = Graph(name=filename, directory=path.as_posix(), format=format)
     g.attr(rankdir='LR')
 
     for group in group_model.keys():
