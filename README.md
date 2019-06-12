@@ -2,6 +2,16 @@
 A simulation, playing a game of kwartet using logic rules. For the MAS course at RUG
 
 ## Installation
+In order to be able to create graphs, we need to install graphviz libraries in our computer. 
+The python package graphviz is just a wrapper to the C libraries.
+
+For installation instructions to other OS check https://graphviz.gitlab.io/download/
+
+For Ubuntu / Debian:
+```
+sudo apt update
+sudo apt install graphviz
+```
 Create virtualenv in base repo directory:
 ```
 python3 -m venv myenv
