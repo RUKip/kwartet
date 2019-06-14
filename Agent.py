@@ -83,7 +83,6 @@ class Agent(object):
 
         Returns:
             Nothing
-
         """
         for observer in self.model.players:
             # Updating model for the player(asked_id)
@@ -181,15 +180,30 @@ class Agent(object):
 
         """
         
-        # TODO: if time permits it do some more advanced strategies
-        # E.g. if I am certain that numplayers-1 don't have a card then I know
-        # who has the card
-
-        # E.g. if, I know that a player has a card, then I also know that the
-        # others dont't have it, so adapt model consequently
+        logging.info("Agent " + str(self.id) + " applies advanced thinking")
         
-        msg = "Player " + str(self.id) + " does not have advanced strategies implemented at the moment.."
-        logging.debug(msg)
+        # Go through opponents card status. If someone has a card, the other players do not have this card.
+        for group in self.model.card_model.keys():
+            for observer in self.model.players:
+                for card in self.model.card_model[group][observer][1]:
+                    for opponent in self.opponents:
+                        if self.model.card_model[group][observer][opponent][card] == Model.WORLD_KNOWN:
+                            for other_player in self.opponents:
+                                if other_player != opponent:
+                                    self.model.card_model[group][observer][other_player][card] = Model.WORLD_DELETED
+        
+        # Go through everyones card status. If all but one do not have the card, the other player does have this card.
+        for group in self.model.card_model.keys():
+            for observer in self.model.players:
+                for card in self.model.card_model[group][observer][1]:
+                    deleted_cards = 0
+                    for player in self.model.players:
+                        if self.model.card_model[group][observer][player][card] == Model.WORLD_DELETED:
+                            deleted_cards += 1
+                        else:
+                            stored_player = player
+                    if (deleted_cards == (len(self.model.players) - 1)):
+                        self.model.card_model[group][observer][stored_player][card] = Model.WORLD_KNOWN
 
     def setModel(self, model):
         self.model = model
