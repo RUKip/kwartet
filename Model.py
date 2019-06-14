@@ -14,8 +14,8 @@ class Model(object):
 
     group_model = {}    #Model of group options
     card_model = {}     #Full model of card options
-    players = []        #Players id's excluding self
-    # owner = None        #Owner of this model
+    
+    players = []        #Players id's still in the game
 
     CARD_DEFINITION_LOCATION = "CardDefinitions.txt"
 
@@ -43,16 +43,22 @@ class Model(object):
         for line in file:
             if line.strip():
                 (group, card) = line.split()
-                for player in self.players:
-                    if(not group in self.card_model):
-                        self.card_model[group] = {}
-                    if (not player in self.card_model[group]):
-                        self.card_model[group][player] = {}
-                    self.card_model[group][player][card] = self.WORLD_MAYBE
+                for observer in self.players:
+                    for player in self.players:
+                        # initialize fields
+                        if (not group in self.card_model):
+                            self.card_model[group] = {}
+                        if (not observer in self.card_model[group]):
+                            self.card_model[group][observer] = {}
+                        if (not player in self.card_model[group][observer]):
+                            self.card_model[group][observer][player] = {}
+                        self.card_model[group][observer][player][card] = self.WORLD_MAYBE
 
-                    if (not group in self.group_model):
-                        self.group_model[group] = {}
-                    self.group_model[group][player] = self.WORLD_MAYBE
+                        if (not group in self.group_model):
+                            self.group_model[group] = {}
+                        if (not observer in self.group_model[group]):
+                            self.group_model[group][observer] = {}
+                        self.group_model[group][observer][player] = self.WORLD_MAYBE
 
         logging.debug("Initial group model: " + str(self.group_model))
         logging.debug("Initial card model: " + str(self.card_model))
