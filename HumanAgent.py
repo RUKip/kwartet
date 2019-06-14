@@ -29,7 +29,7 @@ class HumanAgent(Agent):
             group_cardname = card.split(":")
             if(not(len(group_cardname)==2)):
                 print("Wrong syntax")
-            elif(not self.is_valid(group_cardname[1])):
+            elif not (self.is_valid(group_cardname[1])):
                 print("That is not a card you can ask")
             else:
                 break
@@ -45,6 +45,7 @@ class HumanAgent(Agent):
             self.opponents.remove(dead_player_id)
 
     def is_valid(self, cardname):
+        print("checking if card: " + cardname + ", is valid")
         for card in self.all_cards:
             if(cardname == str(card)):
                 return True

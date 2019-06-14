@@ -22,6 +22,7 @@ def handleInput(question, type_cast=str, human_agent=None):
 
 
 def defaultHandle(input, humanAgent):
+    print("input: " + input)
     if input == HELP_COMMAND:
         showPossibleCommands()
     if input == EXIT_COMMAND:
