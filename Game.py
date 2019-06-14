@@ -4,12 +4,14 @@ import logging
 import random
 
 from ComputerAgent import ComputerAgent
+from HumanAgent import HumanAgent
 from Card import Card
 from Model import Model
 import GraphPrinting
 
-
 class Game(object):
+
+    GAME_LOOP_TIME_MILLI = 1000
 
     agents = {}         #{agent_id => Agent}
     cards_in_play = {}  #{agent_id => {group => [Cards]}}
@@ -23,37 +25,14 @@ class Game(object):
         model = Model(player_cnt)
         model.initModel()
 
-        # create agents and set model
-        for x in range(1, player_cnt+1):
-            opponents = list(range(1, player_cnt+1))
-            opponents.remove(x)
-            agent = ComputerAgent(x, opponents)
-            agent.setModel(deepcopy(model))
-            self.agents[x] = agent
-            self.cards_in_play[agent.id] = {}
+        self.initAgents(player_cnt=player_cnt, model=model)
 
-        #if self.hasHuman:
-            #self.agents[player_cnt] = HumanAgent()
+        if self.hasHuman:
+            self.agents[player_cnt+1] = HumanAgent(id = player_cnt+1, opponents = list(range(1, player_cnt)))
 
-        # divide cards randomly over agents
-        all_groups = model.group_model.keys()
-        all_cards = []
-        for group in all_groups:
-            for card in model.card_model[group][1].keys():
-                all_cards.append((group,card))
-                for agent_id in self.agents:
-                    self.cards_in_play[agent_id][group] = []
+        all_cards = self.initCardsInPlay(model)
+        self.divideCards(all_cards)
 
-        while(len(all_cards)>=1):
-            for agent_id in self.agents:
-                # might happen if not every agent gets the same amount of cards
-                if len(all_cards)<1:
-                    break
-                (group, name) = random.choice(all_cards)
-                all_cards.remove((group,name))
-                random_card = Card(group, name)
-                self.cards_in_play[agent_id][group].append(random_card)
-                
         # Initialize agent specific models
         for agent in self.agents.values():
             agent_card_set = deepcopy(self.cards_in_play[agent.id])
@@ -81,7 +60,40 @@ class Game(object):
             GraphPrinting.create_graph(a, filename)
 
 
-    def startGame(self):
+    # create agents and set model
+    def initAgents(self, player_cnt, model):
+        for x in range(1, player_cnt+1):
+            opponents = list(range(1, player_cnt+1))
+            opponents.remove(x)
+            agent = ComputerAgent(id = x, opponents = opponents)
+            agent.setModel(deepcopy(model))
+            self.agents[x] = agent
+            self.cards_in_play[agent.id] = {}
+
+    #init and return initial set of cards
+    def initCardsInPlay(self,model):
+        all_groups = model.group_model.keys()
+        all_cards = []
+        for group in all_groups:
+            for card in model.card_model[group][1].keys():
+                all_cards.append((group, card))
+                for agent_id in self.agents:
+                    self.cards_in_play[agent_id][group] = []
+        return all_cards
+
+    # divide cards randomly over agents, until no cards left
+    def divideCards(self, starting_cards):
+        while (len(starting_cards) >= 1):
+            for agent_id in self.agents:
+                if len(starting_cards) < 1:
+                    break
+                (group, name) = random.choice(starting_cards)
+                starting_cards.remove((group, name))
+                random_card = Card(group, name)
+                self.cards_in_play[agent_id][group].append(random_card)
+
+
+    def startGameLoop(self):
         #play untill no more agents are in the game
         agent = random.choice(list(self.agents.values()))
         logging.info("Player " + str(agent.id) + " is going to start the game")
@@ -90,17 +102,29 @@ class Game(object):
             round += 1
             logging.info("-------- Starting round {} --------".format(round))
 
-            self.print_agent_graphs(round)
-            agent = self.askingRound(agent)
+            starting_time = time.time()
 
-            #Do some reasoning (all agents)
-            for a in self.agents.values():
-                a.basic_thinking()
+            agent = self.loopIteration(round,agent)
 
-            self.applyReasoningStrategies()
+            elapsed_time = time.time() - starting_time
+            if self.hasHuman:
+                sleep_time = self.GAME_LOOP_TIME_MILLI - elapsed_time
+                if(sleep_time>0.0):
+                    time.sleep(sleep_time)
 
         logging.info("scores: " + str(self.scores))
         return self.scores
+
+    def loopIteration(self, round, agent):
+        self.print_agent_graphs(round)
+        new_agent = self.askingRound(agent)
+
+        # Do some reasoning (all agents)
+        for a in self.agents.values():
+            a.basic_thinking()
+
+        self.applyReasoningStrategies()
+        return new_agent
 
     def askingRound(self, current_player):
         logging.info("Starting a question round for player " + str(current_player.id) + ": ")

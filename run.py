@@ -50,7 +50,7 @@ def ask_multiple_games():
 	return games_cnt
 
 def ask_human_player(player_cnt):
-	answer = input("Do you want to join the fun? (y/n)")
+	answer = input("Do you want to join the fun? Note: no UI availble (y/n)")
 	if answer[0] == "y":
 		print("Cool, you will be player " + str(player_cnt))
 		return True
@@ -61,7 +61,7 @@ def ask_human_player(player_cnt):
 def start_one_game(player_cnt, has_human_player):
 	game = Game(has_human_player)
 	game.initGame(player_cnt)
-	result = game.startGame()
+	result = game.startGameLoop()
 	return result
 
 
@@ -109,7 +109,12 @@ player_cnt = ask_player_cnt()
 has_human_player = ask_human_player(player_cnt)
 
 if has_human_player:
-	start_one_game(player_cnt, has_human_player)
+	result = start_one_game(player_cnt, has_human_player)
+	if result[-1] == max(result):
+		print("You win, congrats!")
+	else:
+		print("You lose!, don't worry they have a very good memory")
+	print("final score: " + str(result));
 else:
 	# set number of games played
 	# games_cnt = 1
