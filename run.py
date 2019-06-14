@@ -1,5 +1,7 @@
 import logging
+import time
 
+import InputHandler
 from Game import Game
 
 
@@ -8,57 +10,49 @@ def list_of_zeroes(n):
 
 
 def ask_player_cnt():
-	player_cnt = None
-	while player_cnt is None:
-		try:
-			player_cnt = int(input("How many players?: "))
-			if (player_cnt < 1):
-				print("Too small player count!")
-				player_cnt = None
-		except:
-			print("Not valid, try a different number")
-			pass
+	while True:
+		player_cnt = InputHandler.handleInput("How many players?: ", type_cast=int)
+		if player_cnt < 1:
+			print("Too small player count!")
+		else:
+			break
 	return player_cnt
 
 
 def ask_game_cnt():
-	games_cnt = None
-	while games_cnt is None:
-		try:
-			games_cnt = int(input("How many games?: "))
-			if (games_cnt < 1):
-				print("Too small games count!")
-				games_cnt = None
-		except:
-			print("Not valid, try a different number")
-			pass
+	while True:
+		games_cnt = InputHandler.handleInput("How many games?: ", type_cast=int)
+		if games_cnt < 1:
+			print("Too small games count!")
+		else:
+			break
 	return games_cnt
 
-
 def ask_multiple_games():
-	answer = None
-	games_cnt = 1
-	while answer is None:
-		answer = input("Do you want to play multiple games? (y/n) ")
+	while True:
+		answer = InputHandler.handleInput("Do you want to play multiple games? (y/n): ")
 		if answer[0] == "y":
 			games_cnt = ask_game_cnt()
+			break
 		elif answer[0] == "n":
 			games_cnt = 1
+			break
 		else:
-			answer = None
 			print("Try again, the y and n are located in the middle area of the keyboard...")
 	return games_cnt
 
 def ask_human_player(player_cnt):
-	answer = input("Do you want to join the fun? Note: no UI availble (y/n)")
-	if answer[0] == "y":
-		print("Cool, you will be player " + str(player_cnt))
-		return True
-	print("Ok guess not")
-	return False
-
+	while True:
+		answer = InputHandler.handleInput("Do you want to join the fun? Note: no UI availble (y/n)")
+		if answer[0] == "y":
+			print("Cool, you will be player " + str(player_cnt))
+			return True
+		else:
+			print("Ok guess not")
+			return False
 
 def start_one_game(player_cnt, has_human_player):
+	print("Lets rumble!.. (This can take a few sec)")
 	game = Game(has_human_player)
 	game.initGame(player_cnt)
 	result = game.startGameLoop()
@@ -109,12 +103,14 @@ player_cnt = ask_player_cnt()
 has_human_player = ask_human_player(player_cnt)
 
 if has_human_player:
+	print("Tip: use the 'help' command to ` see all available commands")
+	time.sleep(3)
 	result = start_one_game(player_cnt, has_human_player)
-	if result[-1] == max(result):
+	if result[player_cnt] == max(result.values()):
 		print("You win, congrats!")
 	else:
 		print("You lose!, don't worry they have a very good memory")
-	print("final score: " + str(result));
+	print("final score: " + str(result))
 else:
 	# set number of games played
 	# games_cnt = 1

@@ -8,6 +8,7 @@ class Agent(ABC):
     model = None
     id = None
     score = 0
+    all_cards = {}
 
     def __init__(self, id, opponents):
         self.id = id
@@ -47,6 +48,12 @@ class Agent(ABC):
     def getScore(self):
         return self.score
 
+    def setAllCards(self, all_cards):
+        self.all_cards = all_cards
+
+    def getAllCards(self):
+        return self.all_cards
+
     def checkKwartet(self):
         kwarter_group = []
         for group in self.card_set:
@@ -57,7 +64,25 @@ class Agent(ABC):
                 kwarter_group.append(str(group))
         return kwarter_group
 
-    # We just need to delete group model as this is vital to picking from card_model
     @abstractmethod
     def sorrowPlayer(self, dead_player_id):
+        pass
+
+    @abstractmethod
+    def AnnouncementGaveCard(self, card, asker_id, asked_id):
+        pass
+
+    @abstractmethod
+    def AnnouncementNotCard(self, card, asker_id, asked_id):
+        pass
+
+    @abstractmethod
+    def AnnouncementKwartet(self, group):
+        pass
+
+    @abstractmethod
+    def basic_thinking(self):
+        pass
+
+    def isHuman(self):
         pass

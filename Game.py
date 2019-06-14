@@ -11,7 +11,8 @@ import GraphPrinting
 
 class Game(object):
 
-    GAME_LOOP_TIME_MILLI = 1000
+    GAME_LOOP_TIME_SEC = 2 + HumanAgent.REFLECTION_TIME
+    SEC_IN_MILLI = 100
 
     agents = {}         #{agent_id => Agent}
     cards_in_play = {}  #{agent_id => {group => [Cards]}}
@@ -25,30 +26,14 @@ class Game(object):
         model = Model(player_cnt)
         model.initModel()
 
-        self.initAgents(player_cnt=player_cnt, model=model)
-
-        if self.hasHuman:
-            self.agents[player_cnt+1] = HumanAgent(id = player_cnt+1, opponents = list(range(1, player_cnt)))
+        self.initAgents(player_cnt, model)
 
         all_cards = self.initCardsInPlay(model)
         self.divideCards(all_cards)
 
-        # Initialize agent specific models
+        # Initialize agent models
         for agent in self.agents.values():
-            agent_card_set = deepcopy(self.cards_in_play[agent.id])
-            agent.generateInitialModel(agent_card_set)
-
-        # I have to do the loop here bc the opponent models are not initialized
-        # in the previous loop iterations
-        for agent in self.agents.values():
-            kwartet_group = agent.checkKwartet()
-            if len(kwartet_group) > 0:
-                for group in kwartet_group:
-                    agent.remove_group(group)
-                    self.cards_in_play[agent.id][group].clear()
-                    agent.score += 1
-                    for opponent in agent.opponents:
-                        self.agents[opponent].AnnouncementKwartet(group)
+            self.initAgentModel(agent, self.cards_in_play, all_cards)
 
             logging.debug("Opponents for agent " + str(agent.id) + ": " + str(agent.opponents))
             logging.info("Card model for agent " + str(agent.id) + ": " + str(agent.model.card_model))
@@ -56,8 +41,9 @@ class Game(object):
         logging.info("Players card division is: " + str(self.cards_in_play))
 
         for a in self.agents.values():
-            filename = "Initial-model"
-            GraphPrinting.create_graph(a, filename)
+            if not a.isHuman():
+                filename = "Initial-model"
+                GraphPrinting.create_graph(a, filename)
 
 
     # create agents and set model
@@ -65,10 +51,14 @@ class Game(object):
         for x in range(1, player_cnt+1):
             opponents = list(range(1, player_cnt+1))
             opponents.remove(x)
-            agent = ComputerAgent(id = x, opponents = opponents)
+            if (x == player_cnt) and self.hasHuman:
+                agent = HumanAgent(player_cnt, list(range(1, player_cnt)))
+            else:
+                agent = ComputerAgent(x, opponents)
             agent.setModel(deepcopy(model))
             self.agents[x] = agent
             self.cards_in_play[agent.id] = {}
+
 
     #init and return initial set of cards
     def initCardsInPlay(self,model):
@@ -80,6 +70,20 @@ class Game(object):
                 for agent_id in self.agents:
                     self.cards_in_play[agent_id][group] = []
         return all_cards
+
+    def initAgentModel(self, agent, cards_in_play, all_cards):
+        agent_card_set = deepcopy(cards_in_play[agent.id])
+        agent.setAllCards(deepcopy(all_cards))
+        agent.generateInitialModel(agent_card_set)
+
+        kwartet_group = agent.checkKwartet()
+        if len(kwartet_group) > 0:
+            for group in kwartet_group:
+                agent.remove_group(group)
+                self.cards_in_play[agent.id][group].clear()
+                agent.score += 1
+                for opponent in agent.opponents:
+                    self.agents[opponent].AnnouncementKwartet(group)
 
     # divide cards randomly over agents, until no cards left
     def divideCards(self, starting_cards):
@@ -97,6 +101,10 @@ class Game(object):
         #play untill no more agents are in the game
         agent = random.choice(list(self.agents.values()))
         logging.info("Player " + str(agent.id) + " is going to start the game")
+        if self.hasHuman:
+            print("-------------------------------------------------------")
+            print("Player " + str(agent.id) + " is going to start the game")
+
         round = 0
         while(agent):
             round += 1
@@ -107,9 +115,11 @@ class Game(object):
             agent = self.loopIteration(round,agent)
 
             elapsed_time = time.time() - starting_time
+
             if self.hasHuman:
-                sleep_time = self.GAME_LOOP_TIME_MILLI - elapsed_time
+                sleep_time = (self.GAME_LOOP_TIME_SEC - elapsed_time)
                 if(sleep_time>0.0):
+                    print("-------- Starting round {} --------".format(round))
                     time.sleep(sleep_time)
 
         logging.info("scores: " + str(self.scores))

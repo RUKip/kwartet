@@ -31,12 +31,6 @@ class ComputerAgent(Agent):
 				for opponent_id in self.opponents:
 					self.set_card_for_player(card, opponent_id, Model.WORLD_DELETED)
 
-	def giveCard(self, card):
-		self.card_set[card.getGroup()].append(card)
-
-	def removeCard(self, card):
-		self.card_set[card.getGroup()].remove(card)
-
 	def remove_group(self, group):
 		self.card_set[group].clear()
 		self.model.group_model[group][self.id] = Model.WORLD_DELETED
@@ -305,3 +299,6 @@ class ComputerAgent(Agent):
 				if player == dead_player_id:
 					self.model.group_model[group][player] = Model.WORLD_DELETED
 		logging.info("Player " + str(self.id) + " now knows player " + str(dead_player_id) + " sleeps with the fishes. RIP")
+
+	def isHuman(self):
+		return False
