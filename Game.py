@@ -61,7 +61,7 @@ class Game(object):
 
 
     #init and return initial set of cards
-    def initCardsInPlay(self,model):
+    def initCardsInPlay(self, model):
         all_groups = model.group_model.keys()
         all_cards = []
         for group in all_groups:
@@ -87,12 +87,13 @@ class Game(object):
 
     # divide cards randomly over agents, until no cards left
     def divideCards(self, starting_cards):
-        while (len(starting_cards) >= 1):
+        starting_cards_copy = deepcopy(starting_cards)
+        while (len(starting_cards_copy) >= 1):
             for agent_id in self.agents:
-                if len(starting_cards) < 1:
+                if len(starting_cards_copy) < 1:
                     break
-                (group, name) = random.choice(starting_cards)
-                starting_cards.remove((group, name))
+                (group, name) = random.choice(starting_cards_copy)
+                starting_cards_copy.remove((group, name))
                 random_card = Card(group, name)
                 self.cards_in_play[agent_id][group].append(random_card)
 
