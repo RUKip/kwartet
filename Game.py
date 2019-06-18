@@ -85,16 +85,16 @@ class Game(object):
             logging.info("-------- Starting round {} --------".format(round))
             # Let's print some graphs..
             filename = "round-" + str(round)
-            
-            for a in self.agents.values():
-                GraphPrinting.create_graph(a, filename)
 
             agent = self.askingRound(agent)
             for a in self.agents.values():
                 a.basic_thinking()
-            # For example, player 1 is an advanced player so:
-            if 1 in self.agents:
-                self.agents[1].advanced_thinking()
+                # For example, player 1 is an advanced player so:
+                if a.id == 2:
+                    a.advanced_thinking()
+
+            for a in self.agents.values():
+                GraphPrinting.create_graph(a, filename)
 
         logging.info("scores: " + str(self.scores))
         return self.scores
