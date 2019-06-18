@@ -28,10 +28,12 @@ class Agent(object):
             return False
 
     def makeDecision(self):
-        if self.id == 1:
-            return self.askPossibleCards()
-        else:
-            return self.askKnownCards()
+        # ~ if self.id == 1:
+            # ~ return self.askPossibleCards()
+        # ~ elif self.id == 2:
+            # ~ return self.askKnownCards()        
+        return self.askKnownCardsSecondOrder()
+
 
     def generateInitialModel(self, init_card_set):
         # Set agent's card to WORLD_DELETED for own observation.
@@ -185,7 +187,7 @@ class Agent(object):
         # Go through opponents card status. If someone has a card, the other players do not have this card.
         for group in self.model.card_model.keys():
             for observer in self.model.players:
-                for card in self.model.card_model[group][observer][1]:
+                for card in self.model.card_model[group][observer][self.id]:
                     for opponent in self.opponents:
                         if self.model.card_model[group][observer][opponent][card] == Model.WORLD_KNOWN:
                             for other_player in self.opponents:
@@ -195,7 +197,7 @@ class Agent(object):
         # Go through everyones card status. If all but one do not have the card, the other player does have this card.
         for group in self.model.card_model.keys():
             for observer in self.model.players:
-                for card in self.model.card_model[group][observer][1]:
+                for card in self.model.card_model[group][observer][self.id]:
                     deleted_cards = 0
                     for player in self.model.players:
                         if self.model.card_model[group][observer][player][card] == Model.WORLD_DELETED:
@@ -204,6 +206,7 @@ class Agent(object):
                             stored_player = player
                     if (deleted_cards == (len(self.model.players) - 1)):
                         self.model.card_model[group][observer][stored_player][card] = Model.WORLD_KNOWN
+                        self.model.group_model[group][observer][stored_player] = Model.WORLD_KNOWN
 
     def setModel(self, model):
         self.model = model
@@ -289,6 +292,100 @@ class Agent(object):
                 return random.choice(possible_cards)  # ask a possible card with know group
             raise Exception("Something went wrong, detected a group but no cards available in that group!")
 
+        elif possible_groups:
+            # If card is known, group is known so no option of known_card in possible group
+            _, possible_cards = self.getCardOptions(possible_groups)
+            logging.info("Possible group - Possible cards: " + str(possible_cards))
+
+        if possible_cards:
+            return random.choice(possible_cards)  # ask a possible card
+
+        else:
+            aux = False
+            # check if player still has cards
+            for group in self.card_set.keys():
+                if len(self.card_set[group]) > 0:
+                    aux = True
+                    break
+            if aux:
+                logging.debug("There is some confusion. there are some possible groups but no possible cards.")
+                # If our current knowledge model tells us that players don't have cards or groups, but we still have cards
+                avail_groups = []  # groups that could be requested
+                for group in self.card_set.keys():
+                    if len(self.card_set[group]) > 0:
+                        avail_groups.append(group)
+                rand_group = random.choice(avail_groups)
+                avail_cards = []  # cards that we do not own
+                for card in self.model.card_model[rand_group][self.id][self.id].keys():
+                    if self.model.card_model[rand_group][self.id][self.id][card] == Model.WORLD_DELETED:
+                        avail_cards.append(card)
+                rand_card = random.choice(avail_cards)
+                rand_player = random.choice(self.opponents)
+                return Card(rand_group, rand_card), rand_player
+            else:
+                return (None, None)  # no more options
+                
+    def askKnownCardsSecondOrder(self):
+        '''
+        This function asks for known cards of which opponents already 
+        know we have something of that group
+        '''
+        
+        knownop_known_groups = []
+        knownop_possible_groups = []
+        known_groups = []
+        possible_groups = []
+        for group in self.card_set:
+            if self.card_set[group]:
+                for player in self.opponents:
+                    if self.model.group_model[group][self.opponents[0]][self.id] == self.model.WORLD_KNOWN:
+                        if self.model.group_model[group][self.id][player] == self.model.WORLD_KNOWN:
+                            knownop_known_groups.append((group, player))
+                        elif self.model.group_model[group][self.id][player] == self.model.WORLD_MAYBE:
+                            knownop_possible_groups.append((group, player))
+                    else:
+                        if self.model.group_model[group][self.id][player] == self.model.WORLD_KNOWN:
+                            known_groups.append((group, player))
+                        elif self.model.group_model[group][self.id][player] == self.model.WORLD_MAYBE:
+                            possible_groups.append((group, player))
+                            
+        logging.info("Player card set: " + str(self.card_set))
+        logging.info("Known by opponents, known groups: " + str(knownop_known_groups))
+        logging.info("Known by opponents, possible groups: " + str(knownop_possible_groups))
+        logging.info("Known groups: " + str(known_groups))
+        logging.info("Possible groups: " + str(possible_groups))
+
+        possible_cards = []
+        # prioritize known groups
+        if knownop_known_groups:
+            known_cards, possible_cards = self.getCardOptions(knownop_known_groups)
+
+            logging.info("Known by opponents, known group - Known cards: " + str(known_cards))
+            logging.info("Known by opponents, known group - Possible cards: " + str(possible_cards))
+
+            if known_cards:
+                return random.choice(known_cards)  # ask a know card
+            elif possible_cards:
+                return random.choice(possible_cards)  # ask a possible card with know group
+            raise Exception("Something went wrong, detected a group but no cards available in that group!")
+        elif knownop_possible_groups:
+            _, possible_cards = self.getCardOptions(knownop_possible_groups)
+            logging.info("Known by opponents, possible group - Possible cards: " + str(possible_cards))
+            
+            if possible_cards:
+                return random.choice(possible_cards)  # ask a possible card with know group
+            raise Exception("Something went wrong, detected a group but no cards available in that group!")
+        elif known_groups:
+            known_cards, possible_cards = self.getCardOptions(known_groups)
+
+            logging.info("Known group - Known cards: " + str(known_cards))
+            logging.info("Known group - Possible cards: " + str(possible_cards))
+
+            if known_cards:
+                return random.choice(known_cards)  # ask a know card
+            elif possible_cards:
+                return random.choice(possible_cards)  # ask a possible card with know group
+            raise Exception("Something went wrong, detected a group but no cards available in that group!")
         elif possible_groups:
             # If card is known, group is known so no option of known_card in possible group
             _, possible_cards = self.getCardOptions(possible_groups)
