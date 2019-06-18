@@ -40,39 +40,39 @@ logging.getLogger().addHandler(console)
 logging.info("Starting simulation")
 
 # set number of players
-player_cnt = 3
+player_cnt = 5
 while player_cnt is None:
-	try:
-		player_cnt = int(input("How many players?: "))
-		if(player_cnt<1):
-			print("Too small player count!")
-			player_cnt = None
-	except:
-		print("Not valid, try a different number")
-		pass
+    try:
+        player_cnt = int(input("How many players?: "))
+        if(player_cnt<1):
+            print("Too small player count!")
+            player_cnt = None
+    except:
+        print("Not valid, try a different number")
+        pass
 
 # set number of games played
 games_cnt = 1
 while games_cnt is None:
-	try:
-		games_cnt = int(input("How many games?: "))
-		if(games_cnt<1):
-			print("Too small games count!")
-			games_cnt = None
-	except:
-		print("Not valid, try a different number")
-		pass
+    try:
+        games_cnt = int(input("How many games?: "))
+        if(games_cnt<1):
+            print("Too small games count!")
+            games_cnt = None
+    except:
+        print("Not valid, try a different number")
+        pass
 
 final_result = [0] * (player_cnt+1)
 
 for i in range (1,games_cnt+1):
-	game = Game()
-	game.initGame(player_cnt)
-	result = game.startGame()
-	
-	for x in range (1, player_cnt+1):
-		final_result[x] += result[x]
+    game = Game()
+    game.initGame(player_cnt)
+    result = game.startGame()
+    
+    for x in range (1, player_cnt+1):
+        final_result[x] += result[x]
 
 for x in range (1, player_cnt+1):
-	print(("Player %d: " %x) + str(final_result[x]/500))
+    print(("Player %d: " %x) + str(final_result[x]/games_cnt))
 
