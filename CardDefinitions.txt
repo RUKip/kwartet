@@ -12,3 +12,38 @@ healthy_food giants_milk
 healthy_food cucumber
 healthy_food vitamin_pill
 healthy_food avocado
+
+sports basketball
+sports football
+sports dancing
+sports swimming
+
+numbers one
+numbers thirteen
+numbers fifty
+numbers sixty-one
+
+clothing dress
+clothing sweater
+clothing shirt
+clothing jacket
+
+rooms bathroom
+rooms bedroom
+rooms kitchen
+rooms hallway
+
+colours red
+colours violet
+colours green
+colours yellow
+
+names oliver
+names harry
+names george
+names noah
+
+country cambodia
+country eswatini
+country lesotho
+country nigeria
