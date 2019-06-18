@@ -5,7 +5,6 @@ from Agent import Agent
 import InputHandler
 from Card import Card
 
-
 class HumanAgent(Agent):
 
     REFLECTION_TIME = 5
@@ -14,6 +13,9 @@ class HumanAgent(Agent):
         logging.info("Human player's turn")
         print("It is your turn!")
         self.showCardSet()
+
+        if self.isDead:
+            return (None,None)
 
         while True:
             agent_id = InputHandler.handleInput("Asking which player?: ", type_cast=int, human_agent=self)
@@ -31,17 +33,17 @@ class HumanAgent(Agent):
             else:
                 break
         card_values = card_name.split(":")
-        card = Card(card_values[0], card_name)
+        card = Card(card_values[0], card_values[1])
         return (card, agent_id)
 
     def generateInitialModel(self, init_card_set):
         self.card_set = init_card_set
+        self.isDead = False
 
     def sorrowPlayer(self, dead_player_id):
-        print("deadplayerid: " + str(dead_player_id))    # debug
-        print("own id: " + str(self.id)) #debug
         if dead_player_id == self.id:
             print("Seems your out of cards partner.. lets wait for the result")
+            self.isDead = True
         else:
             print("Player " + str(dead_player_id) + " sleeps with the fishes")
             print(self.opponents)
@@ -63,7 +65,7 @@ class HumanAgent(Agent):
         options = []
         for card in self.all_cards:
             card = Card(card[0], card[1])
-            if card.getGroup() in self.card_set.keys():
+            if len(self.card_set[card.getGroup()]) > 0:
                 if not (card in self.card_set[card.getGroup()]):
                     options.append(card)
         return options
