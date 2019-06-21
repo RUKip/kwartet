@@ -2,6 +2,9 @@ import logging
 
 from abc import ABC, abstractmethod
 
+from Card import Card
+
+
 class Agent(ABC):
     card_set = {}
     opponents = []
@@ -53,6 +56,15 @@ class Agent(ABC):
 
     def getAllCards(self):
         return self.all_cards
+
+    def getOptions(self):
+        options = []
+        for card in self.all_cards:
+            card = Card(card[0], card[1])
+            if len(self.card_set[card.getGroup()]) > 0:
+                if not (card in self.card_set[card.getGroup()]):
+                    options.append(card)
+        return options
 
     def checkKwartet(self):
         kwarter_group = []

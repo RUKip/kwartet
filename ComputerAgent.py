@@ -8,11 +8,13 @@ import random
 
 class ComputerAgent(Agent):
 
+	#this function is used to give strategies to each individual agent
 	def makeDecision(self):
+		return self.askRandom()
 		if self.id == 1:
-			return self.askRandom()
-		else:
 			return self.askKnownCards()
+		else:
+			return self.askRandom()
 
 	def generateInitialModel(self, init_card_set):
 		# Set agent's card to WORLD_DELETED.
@@ -124,12 +126,6 @@ class ComputerAgent(Agent):
 			for card in player_cards[group]:
 				for player_id in self.model.players:
 					self.set_card_for_player(card, player_id, Model.WORLD_DELETED)
-		# Go through everyone's card status. If anybody has 4 Model.WORLD_DELETED, then group deleted.
-		for group in self.model.card_model.keys():
-			for player in self.model.card_model[group].keys():
-				aux = sum(self.model.card_model[group][player].values())
-				if aux == -4:
-					self.model.group_model[group][player] = self.model.WORLD_DELETED
 
 	def advanced_thinking(self):
 		"""
@@ -151,23 +147,6 @@ class ComputerAgent(Agent):
 		# E.g. if, I know that a player has a card, then I also know that the
 		# others dont't have it, so adapt model consequently
 
-	def setModel(self, model):
-		self.model = model
-		self.model.players.remove(self.id)
-
-	def getScore(self):
-		return self.score
-
-	def checkKwartet(self):
-		kwarter_group = []
-		for group in self.card_set:
-			if len(self.card_set[group]) > 3:
-				logging.info("Kwartet! Player " + str(self.id) +
-							 " found 4 cards of group " +
-							 str(group))
-				kwarter_group.append(str(group))
-		return kwarter_group
-
 	def set_card_for_player(self, card, player_id, operator):
 		self.model.card_model[card.getGroup()][player_id][card.getCard()] = operator
 
@@ -177,44 +156,12 @@ class ComputerAgent(Agent):
 	def askRandom(self):
 		logging.info("Player %d will ask for a random possible card." %self.id)
 		logging.info("Player card set: " + str(self.card_set))
-
-		possible_cards = []
-		for group in self.card_set:
-			if self.card_set[group]:	# player is allowed to ask for a card in this group
-				for player in self.opponents:
-					for card in self.model.card_model[group][player]:
-						if self.model.card_model[group][player][card] == self.model.WORLD_KNOWN:
-							possible_cards.append((Card(group, card), player))
-						if self.model.card_model[group][player][card] == self.model.WORLD_MAYBE:
-							possible_cards.append((Card(group, card), player))
-
-		if possible_cards:
-			logging.info("Possible cards: " + str(possible_cards))
-			return random.choice(possible_cards)  # ask a possible card
-		else:
-			aux = False
-			# check if player still has cards
-			for group in self.card_set.keys():
-				if len(self.card_set[group]) > 0:
-					aux = True
-					break
-			if aux:
-				logging.debug("There is some confusion. there are some possible groups but no possible cards.")
-				# If our current knowledge model tells us that players don't have cards or groups, but we still have cards
-				avail_groups = []  # groups that could be requested
-				for group in self.card_set.keys():
-					if len(self.card_set[group]) > 0:
-						avail_groups.append(group)
-				rand_group = random.choice(avail_groups)
-				avail_cards = []  # cards that we do not own
-				for card in self.model.card_model[rand_group][self.id].keys():
-					if self.model.card_model[rand_group][self.id][card] == Model.WORLD_DELETED:
-						avail_cards.append(card)
-				rand_card = random.choice(avail_cards)
-				rand_player = random.choice(self.opponents)
-				return Card(rand_group, rand_card), rand_player
-			else:
-				return (None, None)  # no more options
+		options = self.getOptions()
+		if options and self.opponents:
+			random_card = random.choice(options)
+			random_player = random.choice(self.opponents)
+			return	(random_card, random_player)
+		return (None,None)
 
 	def askKnownCards(self):
 		known_groups, possible_groups = self.getGroupOptions()
