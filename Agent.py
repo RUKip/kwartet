@@ -84,5 +84,6 @@ class Agent(ABC):
     def basic_thinking(self):
         pass
 
+    @abstractmethod
     def isHuman(self):
         pass

@@ -1,10 +1,9 @@
 import logging
 import time
 
-from copy import deepcopy, copy
 from Agent import Agent
 import InputHandler
-
+from Card import Card
 
 class HumanAgent(Agent):
 
@@ -14,6 +13,9 @@ class HumanAgent(Agent):
         logging.info("Human player's turn")
         print("It is your turn!")
         self.showCardSet()
+
+        if self.isDead:
+            return (None,None)
 
         while True:
             agent_id = InputHandler.handleInput("Asking which player?: ", type_cast=int, human_agent=self)
@@ -25,41 +27,54 @@ class HumanAgent(Agent):
                 break
 
         while True:
-            card = InputHandler.handleInput("Which card? (syntax => group:card_name): ", human_agent=self)
-            group_cardname = card.split(":")
-            if(not(len(group_cardname)==2)):
-                print("Wrong syntax")
-            elif(not self.is_valid(group_cardname[1])):
+            card_name = InputHandler.handleInput("Which card? (syntax => group:card_name): ", human_agent=self)
+            if not (self.is_valid(card_name)):
                 print("That is not a card you can ask")
             else:
                 break
+        card_values = card_name.split(":")
+        card = Card(card_values[0], card_values[1])
+        return (card, agent_id)
 
     def generateInitialModel(self, init_card_set):
         self.card_set = init_card_set
+        self.isDead = False
 
     def sorrowPlayer(self, dead_player_id):
         if dead_player_id == self.id:
             print("Seems your out of cards partner.. lets wait for the result")
+            self.isDead = True
         else:
             print("Player " + str(dead_player_id) + " sleeps with the fishes")
-            self.opponents.remove(dead_player_id)
+            print(self.opponents)
 
-    def is_valid(self, cardname):
-        for card in self.all_cards:
-            if(cardname == str(card)):
-                return True
+    def is_valid(self, card_name):
+        print("checking if card: " + card_name + ", is valid")
+        options = self.getOptions()
+        if card_name in [str(option) for option in options]:
+            return True
         return False
 
     def showCardSet(self):
+        print(InputHandler.RESPONSE_BORDER)
         print("Cards in hand:")
         print(self.card_set)
+        print(InputHandler.RESPONSE_BORDER)
+
+    def getOptions(self):
+        options = []
+        for card in self.all_cards:
+            card = Card(card[0], card[1])
+            if len(self.card_set[card.getGroup()]) > 0:
+                if not (card in self.card_set[card.getGroup()]):
+                    options.append(card)
+        return options
 
     def showAskOptions(self):
-        leftovercards = copy(self.all_cards)
-        for card in self.card_set.values:
-            leftovercards.remove(card)
-
-        print("Possible options are: " + str(leftovercards))
+        options = self.getOptions()
+        print(InputHandler.RESPONSE_BORDER)
+        print("Possible options are: " + str(options))
+        print(InputHandler.RESPONSE_BORDER)
 
     def AnnouncementGaveCard(self, card, asker_id, asked_id):
         if asked_id == self.id:

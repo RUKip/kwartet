@@ -103,7 +103,7 @@ player_cnt = ask_player_cnt()
 has_human_player = ask_human_player(player_cnt)
 
 if has_human_player:
-	print("Tip: use the 'help' command to ` see all available commands")
+	print("Tip: use the 'help' command to see all available commands")
 	time.sleep(3)
 	result = start_one_game(player_cnt, has_human_player)
 	if result[player_cnt] == max(result.values()):

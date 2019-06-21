@@ -6,7 +6,7 @@ SHOW_CARDS_COMMAND = "show cards"
 GIVE_ASK_OPTIONS_COMMAND = "give options"
 
 INVALID_INPUT_RESPONSE = "Sorry not valid"
-
+RESPONSE_BORDER = "------------------------------------"
 
 def handleInput(question, type_cast=str, human_agent=None):
     answer = None
@@ -15,7 +15,7 @@ def handleInput(question, type_cast=str, human_agent=None):
             answer = input(question)
             defaultHandle(answer, human_agent)
             answer = type_cast(answer)
-        except:
+        except ValueError:
             print(INVALID_INPUT_RESPONSE)
             answer = None
     return answer
@@ -35,9 +35,9 @@ def defaultHandle(input, humanAgent):
 
 
 def showPossibleCommands():
-    print("------------------------------------")
+    print(RESPONSE_BORDER)
     print("Possible commands are:")
     print(EXIT_COMMAND + " => " + "When you are completely done with this game!")
     print(SHOW_CARDS_COMMAND + " => " + "Output your current cards")
     print(GIVE_ASK_OPTIONS_COMMAND + " => " + "Give a set of card options you can ask")
-    print("------------------------------------")
+    print(RESPONSE_BORDER)

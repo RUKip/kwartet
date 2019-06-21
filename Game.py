@@ -11,7 +11,7 @@ import GraphPrinting
 
 class Game(object):
 
-    GAME_LOOP_TIME_SEC = 2 + HumanAgent.REFLECTION_TIME
+    GAME_LOOP_TIME_SEC = 3 + HumanAgent.REFLECTION_TIME
     SEC_IN_MILLI = 100
 
     agents = {}         #{agent_id => Agent}
@@ -61,7 +61,7 @@ class Game(object):
 
 
     #init and return initial set of cards
-    def initCardsInPlay(self,model):
+    def initCardsInPlay(self, model):
         all_groups = model.group_model.keys()
         all_cards = []
         for group in all_groups:
@@ -87,12 +87,13 @@ class Game(object):
 
     # divide cards randomly over agents, until no cards left
     def divideCards(self, starting_cards):
-        while (len(starting_cards) >= 1):
+        starting_cards_copy = deepcopy(starting_cards)
+        while (len(starting_cards_copy) >= 1):
             for agent_id in self.agents:
-                if len(starting_cards) < 1:
+                if len(starting_cards_copy) < 1:
                     break
-                (group, name) = random.choice(starting_cards)
-                starting_cards.remove((group, name))
+                (group, name) = random.choice(starting_cards_copy)
+                starting_cards_copy.remove((group, name))
                 random_card = Card(group, name)
                 self.cards_in_play[agent_id][group].append(random_card)
 
@@ -106,20 +107,19 @@ class Game(object):
             print("Player " + str(agent.id) + " is going to start the game")
 
         round = 0
-        while(agent):
+        while(agent and self.agents):
             round += 1
             logging.info("-------- Starting round {} --------".format(round))
+            if self.hasHuman:
+                print("-------- Starting round {} --------".format(round))
 
             starting_time = time.time()
-
             agent = self.loopIteration(round,agent)
-
             elapsed_time = time.time() - starting_time
 
             if self.hasHuman:
                 sleep_time = (self.GAME_LOOP_TIME_SEC - elapsed_time)
                 if(sleep_time>0.0):
-                    print("-------- Starting round {} --------".format(round))
                     time.sleep(sleep_time)
 
         logging.info("scores: " + str(self.scores))
@@ -186,6 +186,9 @@ class Game(object):
                 to_player.score += 1
                 for opponent in to_player.opponents:
                     self.agents[opponent].AnnouncementKwartet(group)
+            if self.hasEmptyHand(to_player.id):
+                logging.info("Player " + str(to_player.id) + " got no cards left")
+                self.outOfGame(to_player.id)
 
     def hasEmptyHand(self, player_id):
         for group in self.cards_in_play[player_id]:
