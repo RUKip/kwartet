@@ -45,6 +45,7 @@ class HumanAgent(Agent):
             print("Seems your out of cards partner.. lets wait for the result")
             self.isDead = True
         else:
+            self.opponents.remove(dead_player_id)
             print("Player " + str(dead_player_id) + " sleeps with the fishes")
             print(self.opponents)
 
@@ -97,7 +98,7 @@ class HumanAgent(Agent):
 
     def basic_thinking(self):
         print("Your time to reflect and think about the big questions in life...")
-        time.sleep(self.REFLECTION_TIME)
+        # ~ time.sleep(self.REFLECTION_TIME)
 
     def isHuman(self):
         return True

@@ -12,18 +12,3 @@ healthy_food giants_milk
 healthy_food cucumber
 healthy_food vitamin_pill
 healthy_food avocado
-
-tripables misplaced_lego
-tripables mushrooms
-tripables banana_peel
-tripables dutch_staircase
-
-baddies the_joker
-baddies mother_in_law
-baddies the_card_with_the_longest_name_to_type_as_human_player
-baddies gru
-
-lotr_races orcs
-lotr_races man_flesh
-lotr_races pointy_ears
-lotr_races goblins

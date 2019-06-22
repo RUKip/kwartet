@@ -185,9 +185,6 @@ class ComputerAgent(Agent):
 						self.model.card_model[group][observer][stored_player][card] = Model.WORLD_KNOWN
 						self.model.group_model[group][observer][stored_player] = Model.WORLD_KNOWN
 
-	# ~ def setModel(self, model):
-		# ~ self.model = model
-
 	def set_card_for_player(self, card, observer, player_id, operator):
 		self.model.card_model[card.getGroup()][observer][player_id][card.getCard()] = operator
 

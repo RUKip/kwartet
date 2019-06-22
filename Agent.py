@@ -45,7 +45,6 @@ class Agent(ABC):
 
     def setModel(self, model):
         self.model = model
-        # ~ self.model.players.remove(self.id)
 
     def getScore(self):
         return self.score

@@ -142,17 +142,12 @@ class Game(object):
         (card, player_id) = current_player.makeDecision()
         logging.debug("Card choice: " + str(card) + ", to player: " + str(player_id))
         if (card is None):  # no more card options
-            # ~ self.agents.pop(current_player.id)
-            # ~ for a in self.agents.values():
-                # ~ a.opponents.remove(current_player.id)
-                # ~ a.model.players.remove(current_player.id)
             self.scores[current_player.id] = current_player.getScore()
             self.outOfGame(current_player.id)
             logging.info("FATALITY!! Player " + str(current_player.id) + " has no more options, picking random new player")
             if not self.agents.values():
                 logging.info("\n--------------------------------\nGame over!")
                 return False
-            # ~ self.outOfGame(current_player.id)
             return random.choice(list(self.agents.values()))
         else:
             logging.info("Player " + str(current_player.id) + " asked player " + str(player_id) + " for card " + str(
@@ -190,6 +185,8 @@ class Game(object):
                 to_player.score += 1
                 for opponent in to_player.opponents:
                     self.agents[opponent].AnnouncementKwartet(group)
+                if to_player.isHuman():
+                    to_player.AnnouncementKwartet(group)
             if self.hasEmptyHand(to_player.id):
                 logging.info("Player " + str(to_player.id) + " got no cards left")
                 self.outOfGame(to_player.id)
@@ -203,9 +200,11 @@ class Game(object):
 
     def outOfGame(self, dead_player_id):
         if dead_player_id in self.agents:
-            self.agents.pop(dead_player_id)
+            logging.info("Game called outOfGame for " + str(dead_player_id))
             for agent in self.agents.values():
+                logging.info("Agent " + str(agent) + "should call sorrowPlayer")
                 agent.sorrowPlayer(dead_player_id)
+            self.agents.pop(dead_player_id)
 
     def print_agent_graphs(self, round):
         # Let's print some graphs..
