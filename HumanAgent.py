@@ -62,15 +62,6 @@ class HumanAgent(Agent):
         print(self.card_set)
         print(InputHandler.RESPONSE_BORDER)
 
-    def getOptions(self):
-        options = []
-        for card in self.all_cards:
-            card = Card(card[0], card[1])
-            if len(self.card_set[card.getGroup()]) > 0:
-                if not (card in self.card_set[card.getGroup()]):
-                    options.append(card)
-        return options
-
     def showAskOptions(self):
         options = self.getOptions()
         print(InputHandler.RESPONSE_BORDER)
@@ -98,7 +89,7 @@ class HumanAgent(Agent):
 
     def basic_thinking(self):
         print("Your time to reflect and think about the big questions in life...")
-        # ~ time.sleep(self.REFLECTION_TIME)
+        time.sleep(self.REFLECTION_TIME)
 
     def isHuman(self):
         return True

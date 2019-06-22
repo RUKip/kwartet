@@ -8,12 +8,13 @@ import random
 
 class ComputerAgent(Agent):
 
+	#Set strategies for agents here!
 	def makeDecision(self):
-		if self.id == 1:
-			return self.askRandom()
-		elif self.id == 2:
+		if self.id == 2:
+			return self.askKnownCardsSecondOrder()
+		elif self.id == 1:
 			return self.askKnownCards()
-		return self.askKnownCardsSecondOrder()
+		return self.askRandom()
 
 	def generateInitialModel(self, init_card_set):
 		# Set agent's card to WORLD_DELETED for own observation.
@@ -139,14 +140,6 @@ class ComputerAgent(Agent):
 			for card in player_cards[group]:
 				for opponent in self.opponents:
 					self.set_card_for_player(card, self.id, opponent, Model.WORLD_DELETED)
-		
-		# Go through everyone's card status. If anybody has 4 Model.WORLD_DELETED, then group deleted.
-		for group in self.model.card_model.keys():
-			for observer in self.model.players:
-				for player in self.model.players:
-					aux = sum(self.model.card_model[group][observer][player].values())
-					if aux == -4:
-						self.model.group_model[group][observer][player] = self.model.WORLD_DELETED
 
 	def advanced_thinking(self):
 		"""
@@ -176,11 +169,15 @@ class ComputerAgent(Agent):
 			for observer in self.model.players:
 				for card in self.model.card_model[group][observer][self.id]:
 					deleted_cards = 0
+					stored_player = None
 					for player in self.model.players:
 						if self.model.card_model[group][observer][player][card] == Model.WORLD_DELETED:
 							deleted_cards += 1
 						else:
-							stored_player = player
+							if(stored_player is None):
+								stored_player = player
+							else:
+								return
 					if (deleted_cards == (len(self.model.players) - 1)):
 						self.model.card_model[group][observer][stored_player][card] = Model.WORLD_KNOWN
 						self.model.group_model[group][observer][stored_player] = Model.WORLD_KNOWN

@@ -200,9 +200,7 @@ class Game(object):
 
     def outOfGame(self, dead_player_id):
         if dead_player_id in self.agents:
-            logging.info("Game called outOfGame for " + str(dead_player_id))
             for agent in self.agents.values():
-                logging.info("Agent " + str(agent) + "should call sorrowPlayer")
                 agent.sorrowPlayer(dead_player_id)
             self.agents.pop(dead_player_id)
 
@@ -213,5 +211,5 @@ class Game(object):
             GraphPrinting.create_graph(a, filename)
 
     def applyReasoningStrategies(self):
-        if 1 in self.agents:  # If we have a player 1, it is an advanced player:
-            self.agents[1].advanced_thinking()
+        if 2 in self.agents:  # If we have a player 2, it is an advanced player:
+            self.agents[2].advanced_thinking()

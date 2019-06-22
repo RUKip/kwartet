@@ -120,9 +120,20 @@ else:
 	for i in range(1, games_cnt + 1):
 		result = start_one_game(player_cnt, has_human_player)
 
-		#single winner function
-		winner = max(result, key=result.get)
-		final_result[winner] += 1
+		#single winner function, on case of draw divide the win
+		winner_count = 0
+		winners = []
+		max_value = max(result.values())
+		for agent_nr in range(1, player_cnt + 1):
+			if result[agent_nr] == max_value:
+				winner_count+=1
+				winners.append(agent_nr)
+
+		if winner_count>1:
+			print("There was a draw!, winners: " + str(winners))
+
+		for winner in winners:
+			final_result[winner] += 1/winner_count
 
 	''' Second place still loses! Commented this count to see which players actually win games	
 		for x in range (1, player_cnt+1):
