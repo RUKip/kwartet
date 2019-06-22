@@ -25,14 +25,13 @@ def create_graph(agent, filename, on_line_view=False):
                 g.edge(group, group + "-Player " + str(player))
 
         for group in group_model.keys():
-            for player in card_model[group].keys():
-                for card in card_model[group][player].keys():
+            for player in agent.model.players:
+                for card in card_model[group][agent.id][player].keys():
                     node_name = str(player) + "-" + card
-                    color = color_mapping[card_model[group][player][card]]
+                    color = color_mapping[card_model[group][agent.id][player][card]]
                     g.attr('node', style='filled', fillcolor=color)
                     g.node(node_name, label=card)
                     g.edge(group + "-Player " + str(player), str(player) + "-" + card)
 
         view = True if on_line_view else False
         g.render(cleanup=True, view=view)
-

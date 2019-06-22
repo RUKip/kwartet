@@ -1,4 +1,4 @@
-farm_animals fat_cow
+farm_animals a_fat_cow
 farm_animals proud_chicken
 farm_animals crazy_pig
 farm_animals smelly_goat
@@ -27,4 +27,3 @@ lotr_races orcs
 lotr_races man_flesh
 lotr_races pointy_ears
 lotr_races goblins
-

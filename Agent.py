@@ -4,7 +4,6 @@ from abc import ABC, abstractmethod
 
 from Card import Card
 
-
 class Agent(ABC):
     card_set = {}
     opponents = []
@@ -46,7 +45,6 @@ class Agent(ABC):
 
     def setModel(self, model):
         self.model = model
-        self.model.players.remove(self.id)
 
     def getScore(self):
         return self.score
