@@ -2,7 +2,6 @@ import time
 from copy import deepcopy
 import logging
 import random
-
 from ComputerAgent import ComputerAgent
 from HumanAgent import HumanAgent
 from Card import Card
@@ -65,8 +64,8 @@ class Game(object):
         all_groups = model.group_model.keys()
         all_cards = []
         for group in all_groups:
-            for card in model.card_model[group][1].keys():
-                all_cards.append((group, card))
+            for card in model.card_model[group][1][1].keys():
+                all_cards.append((group,card))
                 for agent_id in self.agents:
                     self.cards_in_play[agent_id][group] = []
         return all_cards
@@ -136,20 +135,24 @@ class Game(object):
         self.applyReasoningStrategies()
         return new_agent
 
+
     def askingRound(self, current_player):
         logging.info("Starting a question round for player " + str(current_player.id) + ": ")
+        logging.info("scores: " + str(self.scores))
         (card, player_id) = current_player.makeDecision()
         logging.debug("Card choice: " + str(card) + ", to player: " + str(player_id))
         if (card is None):  # no more card options
-            self.agents.pop(current_player.id)
-            for a in self.agents.values():
-                a.opponents.remove(current_player.id)
+            # ~ self.agents.pop(current_player.id)
+            # ~ for a in self.agents.values():
+                # ~ a.opponents.remove(current_player.id)
+                # ~ a.model.players.remove(current_player.id)
             self.scores[current_player.id] = current_player.getScore()
+            self.outOfGame(current_player.id)
             logging.info("FATALITY!! Player " + str(current_player.id) + " has no more options, picking random new player")
             if not self.agents.values():
                 logging.info("\n--------------------------------\nGame over!")
                 return False
-            self.outOfGame(current_player.id)
+            # ~ self.outOfGame(current_player.id)
             return random.choice(list(self.agents.values()))
         else:
             logging.info("Player " + str(current_player.id) + " asked player " + str(player_id) + " for card " + str(
@@ -177,6 +180,7 @@ class Game(object):
         if self.hasEmptyHand(from_player.id):
             logging.info("Another death claimed by kwartet, Player " + str(from_player.id) + " is out of cards")
             self.outOfGame(from_player.id)
+            self.scores[from_player.id] = from_player.getScore()
 
         kwartet_group = to_player.checkKwartet()
         if len(kwartet_group) > 0:
@@ -189,6 +193,7 @@ class Game(object):
             if self.hasEmptyHand(to_player.id):
                 logging.info("Player " + str(to_player.id) + " got no cards left")
                 self.outOfGame(to_player.id)
+                self.scores[to_player.id] = to_player.getScore()
 
     def hasEmptyHand(self, player_id):
         for group in self.cards_in_play[player_id]:
@@ -196,10 +201,11 @@ class Game(object):
                return False
         return True
 
-    def outOfGame(self, player_id):
-        for agent in self.agents.values():
-            agent.sorrowPlayer(player_id)
-
+    def outOfGame(self, dead_player_id):
+        if dead_player_id in self.agents:
+            self.agents.pop(dead_player_id)
+            for agent in self.agents.values():
+                agent.sorrowPlayer(dead_player_id)
 
     def print_agent_graphs(self, round):
         # Let's print some graphs..
