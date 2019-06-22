@@ -10,7 +10,6 @@ class ComputerAgent(Agent):
 
 	#this function is used to give strategies to each individual agent
 	def makeDecision(self):
-		return self.askRandom()
 		if self.id == 1:
 			return self.askKnownCards()
 		else:

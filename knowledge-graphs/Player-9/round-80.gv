@@ -1,0 +1,849 @@
+graph "round-80" {
+	rankdir=LR
+	"Player 9 model" -- lotr_races
+	"lotr_races-Player 1" [label="Player 1"]
+	lotr_races -- "lotr_races-Player 1"
+	"lotr_races-Player 2" [label="Player 2"]
+	lotr_races -- "lotr_races-Player 2"
+	"lotr_races-Player 3" [label="Player 3"]
+	lotr_races -- "lotr_races-Player 3"
+	"lotr_races-Player 4" [label="Player 4"]
+	lotr_races -- "lotr_races-Player 4"
+	"lotr_races-Player 5" [label="Player 5"]
+	lotr_races -- "lotr_races-Player 5"
+	"lotr_races-Player 6" [label="Player 6"]
+	lotr_races -- "lotr_races-Player 6"
+	"lotr_races-Player 7" [label="Player 7"]
+	lotr_races -- "lotr_races-Player 7"
+	"lotr_races-Player 8" [label="Player 8"]
+	lotr_races -- "lotr_races-Player 8"
+	"lotr_races-Player 9" [label="Player 9"]
+	lotr_races -- "lotr_races-Player 9"
+	"lotr_races-Player 10" [label="Player 10"]
+	lotr_races -- "lotr_races-Player 10"
+	"Player 9 model" -- healthy_food
+	"healthy_food-Player 1" [label="Player 1"]
+	healthy_food -- "healthy_food-Player 1"
+	"healthy_food-Player 2" [label="Player 2"]
+	healthy_food -- "healthy_food-Player 2"
+	"healthy_food-Player 3" [label="Player 3"]
+	healthy_food -- "healthy_food-Player 3"
+	"healthy_food-Player 4" [label="Player 4"]
+	healthy_food -- "healthy_food-Player 4"
+	"healthy_food-Player 5" [label="Player 5"]
+	healthy_food -- "healthy_food-Player 5"
+	"healthy_food-Player 6" [label="Player 6"]
+	healthy_food -- "healthy_food-Player 6"
+	"healthy_food-Player 7" [label="Player 7"]
+	healthy_food -- "healthy_food-Player 7"
+	"healthy_food-Player 8" [label="Player 8"]
+	healthy_food -- "healthy_food-Player 8"
+	"healthy_food-Player 9" [label="Player 9"]
+	healthy_food -- "healthy_food-Player 9"
+	"healthy_food-Player 10" [label="Player 10"]
+	healthy_food -- "healthy_food-Player 10"
+	"Player 9 model" -- farm_animals
+	"farm_animals-Player 1" [label="Player 1"]
+	farm_animals -- "farm_animals-Player 1"
+	"farm_animals-Player 2" [label="Player 2"]
+	farm_animals -- "farm_animals-Player 2"
+	"farm_animals-Player 3" [label="Player 3"]
+	farm_animals -- "farm_animals-Player 3"
+	"farm_animals-Player 4" [label="Player 4"]
+	farm_animals -- "farm_animals-Player 4"
+	"farm_animals-Player 5" [label="Player 5"]
+	farm_animals -- "farm_animals-Player 5"
+	"farm_animals-Player 6" [label="Player 6"]
+	farm_animals -- "farm_animals-Player 6"
+	"farm_animals-Player 7" [label="Player 7"]
+	farm_animals -- "farm_animals-Player 7"
+	"farm_animals-Player 8" [label="Player 8"]
+	farm_animals -- "farm_animals-Player 8"
+	"farm_animals-Player 9" [label="Player 9"]
+	farm_animals -- "farm_animals-Player 9"
+	"farm_animals-Player 10" [label="Player 10"]
+	farm_animals -- "farm_animals-Player 10"
+	"Player 9 model" -- super_heroes
+	"super_heroes-Player 1" [label="Player 1"]
+	super_heroes -- "super_heroes-Player 1"
+	"super_heroes-Player 2" [label="Player 2"]
+	super_heroes -- "super_heroes-Player 2"
+	"super_heroes-Player 3" [label="Player 3"]
+	super_heroes -- "super_heroes-Player 3"
+	"super_heroes-Player 4" [label="Player 4"]
+	super_heroes -- "super_heroes-Player 4"
+	"super_heroes-Player 5" [label="Player 5"]
+	super_heroes -- "super_heroes-Player 5"
+	"super_heroes-Player 6" [label="Player 6"]
+	super_heroes -- "super_heroes-Player 6"
+	"super_heroes-Player 7" [label="Player 7"]
+	super_heroes -- "super_heroes-Player 7"
+	"super_heroes-Player 8" [label="Player 8"]
+	super_heroes -- "super_heroes-Player 8"
+	"super_heroes-Player 9" [label="Player 9"]
+	super_heroes -- "super_heroes-Player 9"
+	"super_heroes-Player 10" [label="Player 10"]
+	super_heroes -- "super_heroes-Player 10"
+	"Player 9 model" -- tripables
+	"tripables-Player 1" [label="Player 1"]
+	tripables -- "tripables-Player 1"
+	"tripables-Player 2" [label="Player 2"]
+	tripables -- "tripables-Player 2"
+	"tripables-Player 3" [label="Player 3"]
+	tripables -- "tripables-Player 3"
+	"tripables-Player 4" [label="Player 4"]
+	tripables -- "tripables-Player 4"
+	"tripables-Player 5" [label="Player 5"]
+	tripables -- "tripables-Player 5"
+	"tripables-Player 6" [label="Player 6"]
+	tripables -- "tripables-Player 6"
+	"tripables-Player 7" [label="Player 7"]
+	tripables -- "tripables-Player 7"
+	"tripables-Player 8" [label="Player 8"]
+	tripables -- "tripables-Player 8"
+	"tripables-Player 9" [label="Player 9"]
+	tripables -- "tripables-Player 9"
+	"tripables-Player 10" [label="Player 10"]
+	tripables -- "tripables-Player 10"
+	"Player 9 model" -- baddies
+	"baddies-Player 1" [label="Player 1"]
+	baddies -- "baddies-Player 1"
+	"baddies-Player 2" [label="Player 2"]
+	baddies -- "baddies-Player 2"
+	"baddies-Player 3" [label="Player 3"]
+	baddies -- "baddies-Player 3"
+	"baddies-Player 4" [label="Player 4"]
+	baddies -- "baddies-Player 4"
+	"baddies-Player 5" [label="Player 5"]
+	baddies -- "baddies-Player 5"
+	"baddies-Player 6" [label="Player 6"]
+	baddies -- "baddies-Player 6"
+	"baddies-Player 7" [label="Player 7"]
+	baddies -- "baddies-Player 7"
+	"baddies-Player 8" [label="Player 8"]
+	baddies -- "baddies-Player 8"
+	"baddies-Player 9" [label="Player 9"]
+	baddies -- "baddies-Player 9"
+	"baddies-Player 10" [label="Player 10"]
+	baddies -- "baddies-Player 10"
+	node [fillcolor=gray80 style=filled]
+	"1-man_flesh" [label=man_flesh]
+	"lotr_races-Player 1" -- "1-man_flesh"
+	node [fillcolor=gray80 style=filled]
+	"1-orcs" [label=orcs]
+	"lotr_races-Player 1" -- "1-orcs"
+	node [fillcolor=gray10 style=filled]
+	"1-goblins" [label=goblins]
+	"lotr_races-Player 1" -- "1-goblins"
+	node [fillcolor=gray80 style=filled]
+	"1-pointy_ears" [label=pointy_ears]
+	"lotr_races-Player 1" -- "1-pointy_ears"
+	node [fillcolor=gray80 style=filled]
+	"2-man_flesh" [label=man_flesh]
+	"lotr_races-Player 2" -- "2-man_flesh"
+	node [fillcolor=gray80 style=filled]
+	"2-orcs" [label=orcs]
+	"lotr_races-Player 2" -- "2-orcs"
+	node [fillcolor=gray10 style=filled]
+	"2-goblins" [label=goblins]
+	"lotr_races-Player 2" -- "2-goblins"
+	node [fillcolor=gray10 style=filled]
+	"2-pointy_ears" [label=pointy_ears]
+	"lotr_races-Player 2" -- "2-pointy_ears"
+	node [fillcolor=gray10 style=filled]
+	"3-man_flesh" [label=man_flesh]
+	"lotr_races-Player 3" -- "3-man_flesh"
+	node [fillcolor=gray80 style=filled]
+	"3-orcs" [label=orcs]
+	"lotr_races-Player 3" -- "3-orcs"
+	node [fillcolor=gray10 style=filled]
+	"3-goblins" [label=goblins]
+	"lotr_races-Player 3" -- "3-goblins"
+	node [fillcolor=gray80 style=filled]
+	"3-pointy_ears" [label=pointy_ears]
+	"lotr_races-Player 3" -- "3-pointy_ears"
+	node [fillcolor=gray10 style=filled]
+	"4-man_flesh" [label=man_flesh]
+	"lotr_races-Player 4" -- "4-man_flesh"
+	node [fillcolor=gray10 style=filled]
+	"4-orcs" [label=orcs]
+	"lotr_races-Player 4" -- "4-orcs"
+	node [fillcolor=gray10 style=filled]
+	"4-goblins" [label=goblins]
+	"lotr_races-Player 4" -- "4-goblins"
+	node [fillcolor=gray10 style=filled]
+	"4-pointy_ears" [label=pointy_ears]
+	"lotr_races-Player 4" -- "4-pointy_ears"
+	node [fillcolor=gray80 style=filled]
+	"5-man_flesh" [label=man_flesh]
+	"lotr_races-Player 5" -- "5-man_flesh"
+	node [fillcolor=gray10 style=filled]
+	"5-orcs" [label=orcs]
+	"lotr_races-Player 5" -- "5-orcs"
+	node [fillcolor=gray10 style=filled]
+	"5-goblins" [label=goblins]
+	"lotr_races-Player 5" -- "5-goblins"
+	node [fillcolor=gray80 style=filled]
+	"5-pointy_ears" [label=pointy_ears]
+	"lotr_races-Player 5" -- "5-pointy_ears"
+	node [fillcolor=gray10 style=filled]
+	"6-man_flesh" [label=man_flesh]
+	"lotr_races-Player 6" -- "6-man_flesh"
+	node [fillcolor=gray10 style=filled]
+	"6-orcs" [label=orcs]
+	"lotr_races-Player 6" -- "6-orcs"
+	node [fillcolor=gray10 style=filled]
+	"6-goblins" [label=goblins]
+	"lotr_races-Player 6" -- "6-goblins"
+	node [fillcolor=gray10 style=filled]
+	"6-pointy_ears" [label=pointy_ears]
+	"lotr_races-Player 6" -- "6-pointy_ears"
+	node [fillcolor=gray10 style=filled]
+	"7-man_flesh" [label=man_flesh]
+	"lotr_races-Player 7" -- "7-man_flesh"
+	node [fillcolor=green style=filled]
+	"7-orcs" [label=orcs]
+	"lotr_races-Player 7" -- "7-orcs"
+	node [fillcolor=gray10 style=filled]
+	"7-goblins" [label=goblins]
+	"lotr_races-Player 7" -- "7-goblins"
+	node [fillcolor=gray80 style=filled]
+	"7-pointy_ears" [label=pointy_ears]
+	"lotr_races-Player 7" -- "7-pointy_ears"
+	node [fillcolor=green style=filled]
+	"8-man_flesh" [label=man_flesh]
+	"lotr_races-Player 8" -- "8-man_flesh"
+	node [fillcolor=gray10 style=filled]
+	"8-orcs" [label=orcs]
+	"lotr_races-Player 8" -- "8-orcs"
+	node [fillcolor=gray80 style=filled]
+	"8-goblins" [label=goblins]
+	"lotr_races-Player 8" -- "8-goblins"
+	node [fillcolor=gray10 style=filled]
+	"8-pointy_ears" [label=pointy_ears]
+	"lotr_races-Player 8" -- "8-pointy_ears"
+	node [fillcolor=gray10 style=filled]
+	"9-man_flesh" [label=man_flesh]
+	"lotr_races-Player 9" -- "9-man_flesh"
+	node [fillcolor=gray10 style=filled]
+	"9-orcs" [label=orcs]
+	"lotr_races-Player 9" -- "9-orcs"
+	node [fillcolor=gray10 style=filled]
+	"9-goblins" [label=goblins]
+	"lotr_races-Player 9" -- "9-goblins"
+	node [fillcolor=gray10 style=filled]
+	"9-pointy_ears" [label=pointy_ears]
+	"lotr_races-Player 9" -- "9-pointy_ears"
+	node [fillcolor=gray10 style=filled]
+	"10-man_flesh" [label=man_flesh]
+	"lotr_races-Player 10" -- "10-man_flesh"
+	node [fillcolor=gray80 style=filled]
+	"10-orcs" [label=orcs]
+	"lotr_races-Player 10" -- "10-orcs"
+	node [fillcolor=gray10 style=filled]
+	"10-goblins" [label=goblins]
+	"lotr_races-Player 10" -- "10-goblins"
+	node [fillcolor=gray80 style=filled]
+	"10-pointy_ears" [label=pointy_ears]
+	"lotr_races-Player 10" -- "10-pointy_ears"
+	node [fillcolor=gray10 style=filled]
+	"1-vitamin_pill" [label=vitamin_pill]
+	"healthy_food-Player 1" -- "1-vitamin_pill"
+	node [fillcolor=gray10 style=filled]
+	"1-cucumber" [label=cucumber]
+	"healthy_food-Player 1" -- "1-cucumber"
+	node [fillcolor=gray80 style=filled]
+	"1-avocado" [label=avocado]
+	"healthy_food-Player 1" -- "1-avocado"
+	node [fillcolor=gray80 style=filled]
+	"1-giants_milk" [label=giants_milk]
+	"healthy_food-Player 1" -- "1-giants_milk"
+	node [fillcolor=gray80 style=filled]
+	"2-vitamin_pill" [label=vitamin_pill]
+	"healthy_food-Player 2" -- "2-vitamin_pill"
+	node [fillcolor=gray80 style=filled]
+	"2-cucumber" [label=cucumber]
+	"healthy_food-Player 2" -- "2-cucumber"
+	node [fillcolor=gray80 style=filled]
+	"2-avocado" [label=avocado]
+	"healthy_food-Player 2" -- "2-avocado"
+	node [fillcolor=gray10 style=filled]
+	"2-giants_milk" [label=giants_milk]
+	"healthy_food-Player 2" -- "2-giants_milk"
+	node [fillcolor=gray10 style=filled]
+	"3-vitamin_pill" [label=vitamin_pill]
+	"healthy_food-Player 3" -- "3-vitamin_pill"
+	node [fillcolor=gray10 style=filled]
+	"3-cucumber" [label=cucumber]
+	"healthy_food-Player 3" -- "3-cucumber"
+	node [fillcolor=gray10 style=filled]
+	"3-avocado" [label=avocado]
+	"healthy_food-Player 3" -- "3-avocado"
+	node [fillcolor=gray80 style=filled]
+	"3-giants_milk" [label=giants_milk]
+	"healthy_food-Player 3" -- "3-giants_milk"
+	node [fillcolor=gray80 style=filled]
+	"4-vitamin_pill" [label=vitamin_pill]
+	"healthy_food-Player 4" -- "4-vitamin_pill"
+	node [fillcolor=gray80 style=filled]
+	"4-cucumber" [label=cucumber]
+	"healthy_food-Player 4" -- "4-cucumber"
+	node [fillcolor=gray80 style=filled]
+	"4-avocado" [label=avocado]
+	"healthy_food-Player 4" -- "4-avocado"
+	node [fillcolor=gray80 style=filled]
+	"4-giants_milk" [label=giants_milk]
+	"healthy_food-Player 4" -- "4-giants_milk"
+	node [fillcolor=gray10 style=filled]
+	"5-vitamin_pill" [label=vitamin_pill]
+	"healthy_food-Player 5" -- "5-vitamin_pill"
+	node [fillcolor=gray10 style=filled]
+	"5-cucumber" [label=cucumber]
+	"healthy_food-Player 5" -- "5-cucumber"
+	node [fillcolor=gray10 style=filled]
+	"5-avocado" [label=avocado]
+	"healthy_food-Player 5" -- "5-avocado"
+	node [fillcolor=gray80 style=filled]
+	"5-giants_milk" [label=giants_milk]
+	"healthy_food-Player 5" -- "5-giants_milk"
+	node [fillcolor=gray10 style=filled]
+	"6-vitamin_pill" [label=vitamin_pill]
+	"healthy_food-Player 6" -- "6-vitamin_pill"
+	node [fillcolor=gray10 style=filled]
+	"6-cucumber" [label=cucumber]
+	"healthy_food-Player 6" -- "6-cucumber"
+	node [fillcolor=gray80 style=filled]
+	"6-avocado" [label=avocado]
+	"healthy_food-Player 6" -- "6-avocado"
+	node [fillcolor=gray80 style=filled]
+	"6-giants_milk" [label=giants_milk]
+	"healthy_food-Player 6" -- "6-giants_milk"
+	node [fillcolor=gray80 style=filled]
+	"7-vitamin_pill" [label=vitamin_pill]
+	"healthy_food-Player 7" -- "7-vitamin_pill"
+	node [fillcolor=gray80 style=filled]
+	"7-cucumber" [label=cucumber]
+	"healthy_food-Player 7" -- "7-cucumber"
+	node [fillcolor=gray80 style=filled]
+	"7-avocado" [label=avocado]
+	"healthy_food-Player 7" -- "7-avocado"
+	node [fillcolor=gray80 style=filled]
+	"7-giants_milk" [label=giants_milk]
+	"healthy_food-Player 7" -- "7-giants_milk"
+	node [fillcolor=gray10 style=filled]
+	"8-vitamin_pill" [label=vitamin_pill]
+	"healthy_food-Player 8" -- "8-vitamin_pill"
+	node [fillcolor=gray10 style=filled]
+	"8-cucumber" [label=cucumber]
+	"healthy_food-Player 8" -- "8-cucumber"
+	node [fillcolor=gray80 style=filled]
+	"8-avocado" [label=avocado]
+	"healthy_food-Player 8" -- "8-avocado"
+	node [fillcolor=gray10 style=filled]
+	"8-giants_milk" [label=giants_milk]
+	"healthy_food-Player 8" -- "8-giants_milk"
+	node [fillcolor=gray10 style=filled]
+	"9-vitamin_pill" [label=vitamin_pill]
+	"healthy_food-Player 9" -- "9-vitamin_pill"
+	node [fillcolor=gray10 style=filled]
+	"9-cucumber" [label=cucumber]
+	"healthy_food-Player 9" -- "9-cucumber"
+	node [fillcolor=gray10 style=filled]
+	"9-avocado" [label=avocado]
+	"healthy_food-Player 9" -- "9-avocado"
+	node [fillcolor=gray10 style=filled]
+	"9-giants_milk" [label=giants_milk]
+	"healthy_food-Player 9" -- "9-giants_milk"
+	node [fillcolor=green style=filled]
+	"10-vitamin_pill" [label=vitamin_pill]
+	"healthy_food-Player 10" -- "10-vitamin_pill"
+	node [fillcolor=gray80 style=filled]
+	"10-cucumber" [label=cucumber]
+	"healthy_food-Player 10" -- "10-cucumber"
+	node [fillcolor=gray10 style=filled]
+	"10-avocado" [label=avocado]
+	"healthy_food-Player 10" -- "10-avocado"
+	node [fillcolor=gray10 style=filled]
+	"10-giants_milk" [label=giants_milk]
+	"healthy_food-Player 10" -- "10-giants_milk"
+	node [fillcolor=gray10 style=filled]
+	"1-proud_chicken" [label=proud_chicken]
+	"farm_animals-Player 1" -- "1-proud_chicken"
+	node [fillcolor=gray10 style=filled]
+	"1-fat_cow" [label=fat_cow]
+	"farm_animals-Player 1" -- "1-fat_cow"
+	node [fillcolor=gray10 style=filled]
+	"1-crazy_pig" [label=crazy_pig]
+	"farm_animals-Player 1" -- "1-crazy_pig"
+	node [fillcolor=gray10 style=filled]
+	"1-smelly_goat" [label=smelly_goat]
+	"farm_animals-Player 1" -- "1-smelly_goat"
+	node [fillcolor=gray10 style=filled]
+	"2-proud_chicken" [label=proud_chicken]
+	"farm_animals-Player 2" -- "2-proud_chicken"
+	node [fillcolor=gray10 style=filled]
+	"2-fat_cow" [label=fat_cow]
+	"farm_animals-Player 2" -- "2-fat_cow"
+	node [fillcolor=gray10 style=filled]
+	"2-crazy_pig" [label=crazy_pig]
+	"farm_animals-Player 2" -- "2-crazy_pig"
+	node [fillcolor=gray10 style=filled]
+	"2-smelly_goat" [label=smelly_goat]
+	"farm_animals-Player 2" -- "2-smelly_goat"
+	node [fillcolor=gray10 style=filled]
+	"3-proud_chicken" [label=proud_chicken]
+	"farm_animals-Player 3" -- "3-proud_chicken"
+	node [fillcolor=gray10 style=filled]
+	"3-fat_cow" [label=fat_cow]
+	"farm_animals-Player 3" -- "3-fat_cow"
+	node [fillcolor=gray10 style=filled]
+	"3-crazy_pig" [label=crazy_pig]
+	"farm_animals-Player 3" -- "3-crazy_pig"
+	node [fillcolor=gray10 style=filled]
+	"3-smelly_goat" [label=smelly_goat]
+	"farm_animals-Player 3" -- "3-smelly_goat"
+	node [fillcolor=gray10 style=filled]
+	"4-proud_chicken" [label=proud_chicken]
+	"farm_animals-Player 4" -- "4-proud_chicken"
+	node [fillcolor=gray10 style=filled]
+	"4-fat_cow" [label=fat_cow]
+	"farm_animals-Player 4" -- "4-fat_cow"
+	node [fillcolor=gray10 style=filled]
+	"4-crazy_pig" [label=crazy_pig]
+	"farm_animals-Player 4" -- "4-crazy_pig"
+	node [fillcolor=gray10 style=filled]
+	"4-smelly_goat" [label=smelly_goat]
+	"farm_animals-Player 4" -- "4-smelly_goat"
+	node [fillcolor=gray10 style=filled]
+	"5-proud_chicken" [label=proud_chicken]
+	"farm_animals-Player 5" -- "5-proud_chicken"
+	node [fillcolor=gray10 style=filled]
+	"5-fat_cow" [label=fat_cow]
+	"farm_animals-Player 5" -- "5-fat_cow"
+	node [fillcolor=gray10 style=filled]
+	"5-crazy_pig" [label=crazy_pig]
+	"farm_animals-Player 5" -- "5-crazy_pig"
+	node [fillcolor=gray10 style=filled]
+	"5-smelly_goat" [label=smelly_goat]
+	"farm_animals-Player 5" -- "5-smelly_goat"
+	node [fillcolor=gray10 style=filled]
+	"6-proud_chicken" [label=proud_chicken]
+	"farm_animals-Player 6" -- "6-proud_chicken"
+	node [fillcolor=gray10 style=filled]
+	"6-fat_cow" [label=fat_cow]
+	"farm_animals-Player 6" -- "6-fat_cow"
+	node [fillcolor=gray10 style=filled]
+	"6-crazy_pig" [label=crazy_pig]
+	"farm_animals-Player 6" -- "6-crazy_pig"
+	node [fillcolor=gray10 style=filled]
+	"6-smelly_goat" [label=smelly_goat]
+	"farm_animals-Player 6" -- "6-smelly_goat"
+	node [fillcolor=gray10 style=filled]
+	"7-proud_chicken" [label=proud_chicken]
+	"farm_animals-Player 7" -- "7-proud_chicken"
+	node [fillcolor=gray10 style=filled]
+	"7-fat_cow" [label=fat_cow]
+	"farm_animals-Player 7" -- "7-fat_cow"
+	node [fillcolor=gray10 style=filled]
+	"7-crazy_pig" [label=crazy_pig]
+	"farm_animals-Player 7" -- "7-crazy_pig"
+	node [fillcolor=gray10 style=filled]
+	"7-smelly_goat" [label=smelly_goat]
+	"farm_animals-Player 7" -- "7-smelly_goat"
+	node [fillcolor=gray10 style=filled]
+	"8-proud_chicken" [label=proud_chicken]
+	"farm_animals-Player 8" -- "8-proud_chicken"
+	node [fillcolor=gray10 style=filled]
+	"8-fat_cow" [label=fat_cow]
+	"farm_animals-Player 8" -- "8-fat_cow"
+	node [fillcolor=gray10 style=filled]
+	"8-crazy_pig" [label=crazy_pig]
+	"farm_animals-Player 8" -- "8-crazy_pig"
+	node [fillcolor=gray10 style=filled]
+	"8-smelly_goat" [label=smelly_goat]
+	"farm_animals-Player 8" -- "8-smelly_goat"
+	node [fillcolor=gray10 style=filled]
+	"9-proud_chicken" [label=proud_chicken]
+	"farm_animals-Player 9" -- "9-proud_chicken"
+	node [fillcolor=gray10 style=filled]
+	"9-fat_cow" [label=fat_cow]
+	"farm_animals-Player 9" -- "9-fat_cow"
+	node [fillcolor=gray10 style=filled]
+	"9-crazy_pig" [label=crazy_pig]
+	"farm_animals-Player 9" -- "9-crazy_pig"
+	node [fillcolor=gray10 style=filled]
+	"9-smelly_goat" [label=smelly_goat]
+	"farm_animals-Player 9" -- "9-smelly_goat"
+	node [fillcolor=gray10 style=filled]
+	"10-proud_chicken" [label=proud_chicken]
+	"farm_animals-Player 10" -- "10-proud_chicken"
+	node [fillcolor=gray10 style=filled]
+	"10-fat_cow" [label=fat_cow]
+	"farm_animals-Player 10" -- "10-fat_cow"
+	node [fillcolor=gray10 style=filled]
+	"10-crazy_pig" [label=crazy_pig]
+	"farm_animals-Player 10" -- "10-crazy_pig"
+	node [fillcolor=gray10 style=filled]
+	"10-smelly_goat" [label=smelly_goat]
+	"farm_animals-Player 10" -- "10-smelly_goat"
+	node [fillcolor=gray10 style=filled]
+	"1-superman" [label=superman]
+	"super_heroes-Player 1" -- "1-superman"
+	node [fillcolor=gray10 style=filled]
+	"1-batman" [label=batman]
+	"super_heroes-Player 1" -- "1-batman"
+	node [fillcolor=gray80 style=filled]
+	"1-noobnoob" [label=noobnoob]
+	"super_heroes-Player 1" -- "1-noobnoob"
+	node [fillcolor=gray10 style=filled]
+	"1-spiderman" [label=spiderman]
+	"super_heroes-Player 1" -- "1-spiderman"
+	node [fillcolor=gray80 style=filled]
+	"2-superman" [label=superman]
+	"super_heroes-Player 2" -- "2-superman"
+	node [fillcolor=gray10 style=filled]
+	"2-batman" [label=batman]
+	"super_heroes-Player 2" -- "2-batman"
+	node [fillcolor=gray10 style=filled]
+	"2-noobnoob" [label=noobnoob]
+	"super_heroes-Player 2" -- "2-noobnoob"
+	node [fillcolor=gray10 style=filled]
+	"2-spiderman" [label=spiderman]
+	"super_heroes-Player 2" -- "2-spiderman"
+	node [fillcolor=gray10 style=filled]
+	"3-superman" [label=superman]
+	"super_heroes-Player 3" -- "3-superman"
+	node [fillcolor=gray10 style=filled]
+	"3-batman" [label=batman]
+	"super_heroes-Player 3" -- "3-batman"
+	node [fillcolor=gray80 style=filled]
+	"3-noobnoob" [label=noobnoob]
+	"super_heroes-Player 3" -- "3-noobnoob"
+	node [fillcolor=gray80 style=filled]
+	"3-spiderman" [label=spiderman]
+	"super_heroes-Player 3" -- "3-spiderman"
+	node [fillcolor=gray80 style=filled]
+	"4-superman" [label=superman]
+	"super_heroes-Player 4" -- "4-superman"
+	node [fillcolor=gray10 style=filled]
+	"4-batman" [label=batman]
+	"super_heroes-Player 4" -- "4-batman"
+	node [fillcolor=gray80 style=filled]
+	"4-noobnoob" [label=noobnoob]
+	"super_heroes-Player 4" -- "4-noobnoob"
+	node [fillcolor=gray10 style=filled]
+	"4-spiderman" [label=spiderman]
+	"super_heroes-Player 4" -- "4-spiderman"
+	node [fillcolor=gray10 style=filled]
+	"5-superman" [label=superman]
+	"super_heroes-Player 5" -- "5-superman"
+	node [fillcolor=gray10 style=filled]
+	"5-batman" [label=batman]
+	"super_heroes-Player 5" -- "5-batman"
+	node [fillcolor=gray80 style=filled]
+	"5-noobnoob" [label=noobnoob]
+	"super_heroes-Player 5" -- "5-noobnoob"
+	node [fillcolor=gray10 style=filled]
+	"5-spiderman" [label=spiderman]
+	"super_heroes-Player 5" -- "5-spiderman"
+	node [fillcolor=gray10 style=filled]
+	"6-superman" [label=superman]
+	"super_heroes-Player 6" -- "6-superman"
+	node [fillcolor=gray10 style=filled]
+	"6-batman" [label=batman]
+	"super_heroes-Player 6" -- "6-batman"
+	node [fillcolor=gray80 style=filled]
+	"6-noobnoob" [label=noobnoob]
+	"super_heroes-Player 6" -- "6-noobnoob"
+	node [fillcolor=gray80 style=filled]
+	"6-spiderman" [label=spiderman]
+	"super_heroes-Player 6" -- "6-spiderman"
+	node [fillcolor=green style=filled]
+	"7-superman" [label=superman]
+	"super_heroes-Player 7" -- "7-superman"
+	node [fillcolor=gray10 style=filled]
+	"7-batman" [label=batman]
+	"super_heroes-Player 7" -- "7-batman"
+	node [fillcolor=gray80 style=filled]
+	"7-noobnoob" [label=noobnoob]
+	"super_heroes-Player 7" -- "7-noobnoob"
+	node [fillcolor=green style=filled]
+	"7-spiderman" [label=spiderman]
+	"super_heroes-Player 7" -- "7-spiderman"
+	node [fillcolor=gray10 style=filled]
+	"8-superman" [label=superman]
+	"super_heroes-Player 8" -- "8-superman"
+	node [fillcolor=gray10 style=filled]
+	"8-batman" [label=batman]
+	"super_heroes-Player 8" -- "8-batman"
+	node [fillcolor=gray80 style=filled]
+	"8-noobnoob" [label=noobnoob]
+	"super_heroes-Player 8" -- "8-noobnoob"
+	node [fillcolor=gray80 style=filled]
+	"8-spiderman" [label=spiderman]
+	"super_heroes-Player 8" -- "8-spiderman"
+	node [fillcolor=gray10 style=filled]
+	"9-superman" [label=superman]
+	"super_heroes-Player 9" -- "9-superman"
+	node [fillcolor=green style=filled]
+	"9-batman" [label=batman]
+	"super_heroes-Player 9" -- "9-batman"
+	node [fillcolor=gray10 style=filled]
+	"9-noobnoob" [label=noobnoob]
+	"super_heroes-Player 9" -- "9-noobnoob"
+	node [fillcolor=gray10 style=filled]
+	"9-spiderman" [label=spiderman]
+	"super_heroes-Player 9" -- "9-spiderman"
+	node [fillcolor=gray80 style=filled]
+	"10-superman" [label=superman]
+	"super_heroes-Player 10" -- "10-superman"
+	node [fillcolor=gray10 style=filled]
+	"10-batman" [label=batman]
+	"super_heroes-Player 10" -- "10-batman"
+	node [fillcolor=gray80 style=filled]
+	"10-noobnoob" [label=noobnoob]
+	"super_heroes-Player 10" -- "10-noobnoob"
+	node [fillcolor=gray10 style=filled]
+	"10-spiderman" [label=spiderman]
+	"super_heroes-Player 10" -- "10-spiderman"
+	node [fillcolor=gray10 style=filled]
+	"1-misplaced_lego" [label=misplaced_lego]
+	"tripables-Player 1" -- "1-misplaced_lego"
+	node [fillcolor=gray80 style=filled]
+	"1-banana_peel" [label=banana_peel]
+	"tripables-Player 1" -- "1-banana_peel"
+	node [fillcolor=gray80 style=filled]
+	"1-mushrooms" [label=mushrooms]
+	"tripables-Player 1" -- "1-mushrooms"
+	node [fillcolor=gray80 style=filled]
+	"1-dutch_staircase" [label=dutch_staircase]
+	"tripables-Player 1" -- "1-dutch_staircase"
+	node [fillcolor=green style=filled]
+	"2-misplaced_lego" [label=misplaced_lego]
+	"tripables-Player 2" -- "2-misplaced_lego"
+	node [fillcolor=gray80 style=filled]
+	"2-banana_peel" [label=banana_peel]
+	"tripables-Player 2" -- "2-banana_peel"
+	node [fillcolor=gray10 style=filled]
+	"2-mushrooms" [label=mushrooms]
+	"tripables-Player 2" -- "2-mushrooms"
+	node [fillcolor=gray10 style=filled]
+	"2-dutch_staircase" [label=dutch_staircase]
+	"tripables-Player 2" -- "2-dutch_staircase"
+	node [fillcolor=gray10 style=filled]
+	"3-misplaced_lego" [label=misplaced_lego]
+	"tripables-Player 3" -- "3-misplaced_lego"
+	node [fillcolor=gray10 style=filled]
+	"3-banana_peel" [label=banana_peel]
+	"tripables-Player 3" -- "3-banana_peel"
+	node [fillcolor=gray80 style=filled]
+	"3-mushrooms" [label=mushrooms]
+	"tripables-Player 3" -- "3-mushrooms"
+	node [fillcolor=gray80 style=filled]
+	"3-dutch_staircase" [label=dutch_staircase]
+	"tripables-Player 3" -- "3-dutch_staircase"
+	node [fillcolor=gray10 style=filled]
+	"4-misplaced_lego" [label=misplaced_lego]
+	"tripables-Player 4" -- "4-misplaced_lego"
+	node [fillcolor=gray80 style=filled]
+	"4-banana_peel" [label=banana_peel]
+	"tripables-Player 4" -- "4-banana_peel"
+	node [fillcolor=gray80 style=filled]
+	"4-mushrooms" [label=mushrooms]
+	"tripables-Player 4" -- "4-mushrooms"
+	node [fillcolor=gray10 style=filled]
+	"4-dutch_staircase" [label=dutch_staircase]
+	"tripables-Player 4" -- "4-dutch_staircase"
+	node [fillcolor=gray10 style=filled]
+	"5-misplaced_lego" [label=misplaced_lego]
+	"tripables-Player 5" -- "5-misplaced_lego"
+	node [fillcolor=gray80 style=filled]
+	"5-banana_peel" [label=banana_peel]
+	"tripables-Player 5" -- "5-banana_peel"
+	node [fillcolor=gray80 style=filled]
+	"5-mushrooms" [label=mushrooms]
+	"tripables-Player 5" -- "5-mushrooms"
+	node [fillcolor=gray10 style=filled]
+	"5-dutch_staircase" [label=dutch_staircase]
+	"tripables-Player 5" -- "5-dutch_staircase"
+	node [fillcolor=gray10 style=filled]
+	"6-misplaced_lego" [label=misplaced_lego]
+	"tripables-Player 6" -- "6-misplaced_lego"
+	node [fillcolor=gray10 style=filled]
+	"6-banana_peel" [label=banana_peel]
+	"tripables-Player 6" -- "6-banana_peel"
+	node [fillcolor=gray10 style=filled]
+	"6-mushrooms" [label=mushrooms]
+	"tripables-Player 6" -- "6-mushrooms"
+	node [fillcolor=gray10 style=filled]
+	"6-dutch_staircase" [label=dutch_staircase]
+	"tripables-Player 6" -- "6-dutch_staircase"
+	node [fillcolor=gray10 style=filled]
+	"7-misplaced_lego" [label=misplaced_lego]
+	"tripables-Player 7" -- "7-misplaced_lego"
+	node [fillcolor=gray80 style=filled]
+	"7-banana_peel" [label=banana_peel]
+	"tripables-Player 7" -- "7-banana_peel"
+	node [fillcolor=gray80 style=filled]
+	"7-mushrooms" [label=mushrooms]
+	"tripables-Player 7" -- "7-mushrooms"
+	node [fillcolor=gray80 style=filled]
+	"7-dutch_staircase" [label=dutch_staircase]
+	"tripables-Player 7" -- "7-dutch_staircase"
+	node [fillcolor=gray10 style=filled]
+	"8-misplaced_lego" [label=misplaced_lego]
+	"tripables-Player 8" -- "8-misplaced_lego"
+	node [fillcolor=gray80 style=filled]
+	"8-banana_peel" [label=banana_peel]
+	"tripables-Player 8" -- "8-banana_peel"
+	node [fillcolor=gray80 style=filled]
+	"8-mushrooms" [label=mushrooms]
+	"tripables-Player 8" -- "8-mushrooms"
+	node [fillcolor=gray10 style=filled]
+	"8-dutch_staircase" [label=dutch_staircase]
+	"tripables-Player 8" -- "8-dutch_staircase"
+	node [fillcolor=gray10 style=filled]
+	"9-misplaced_lego" [label=misplaced_lego]
+	"tripables-Player 9" -- "9-misplaced_lego"
+	node [fillcolor=gray10 style=filled]
+	"9-banana_peel" [label=banana_peel]
+	"tripables-Player 9" -- "9-banana_peel"
+	node [fillcolor=gray10 style=filled]
+	"9-mushrooms" [label=mushrooms]
+	"tripables-Player 9" -- "9-mushrooms"
+	node [fillcolor=gray10 style=filled]
+	"9-dutch_staircase" [label=dutch_staircase]
+	"tripables-Player 9" -- "9-dutch_staircase"
+	node [fillcolor=gray10 style=filled]
+	"10-misplaced_lego" [label=misplaced_lego]
+	"tripables-Player 10" -- "10-misplaced_lego"
+	node [fillcolor=gray80 style=filled]
+	"10-banana_peel" [label=banana_peel]
+	"tripables-Player 10" -- "10-banana_peel"
+	node [fillcolor=gray10 style=filled]
+	"10-mushrooms" [label=mushrooms]
+	"tripables-Player 10" -- "10-mushrooms"
+	node [fillcolor=gray10 style=filled]
+	"10-dutch_staircase" [label=dutch_staircase]
+	"tripables-Player 10" -- "10-dutch_staircase"
+	node [fillcolor=gray80 style=filled]
+	"1-gru" [label=gru]
+	"baddies-Player 1" -- "1-gru"
+	node [fillcolor=gray80 style=filled]
+	"1-the_joker" [label=the_joker]
+	"baddies-Player 1" -- "1-the_joker"
+	node [fillcolor=gray10 style=filled]
+	"1-mother_in_law" [label=mother_in_law]
+	"baddies-Player 1" -- "1-mother_in_law"
+	node [fillcolor=gray80 style=filled]
+	"1-the_card_with_the_longest_name_to_type_as_human_player" [label=the_card_with_the_longest_name_to_type_as_human_player]
+	"baddies-Player 1" -- "1-the_card_with_the_longest_name_to_type_as_human_player"
+	node [fillcolor=gray80 style=filled]
+	"2-gru" [label=gru]
+	"baddies-Player 2" -- "2-gru"
+	node [fillcolor=gray80 style=filled]
+	"2-the_joker" [label=the_joker]
+	"baddies-Player 2" -- "2-the_joker"
+	node [fillcolor=gray10 style=filled]
+	"2-mother_in_law" [label=mother_in_law]
+	"baddies-Player 2" -- "2-mother_in_law"
+	node [fillcolor=gray80 style=filled]
+	"2-the_card_with_the_longest_name_to_type_as_human_player" [label=the_card_with_the_longest_name_to_type_as_human_player]
+	"baddies-Player 2" -- "2-the_card_with_the_longest_name_to_type_as_human_player"
+	node [fillcolor=gray80 style=filled]
+	"3-gru" [label=gru]
+	"baddies-Player 3" -- "3-gru"
+	node [fillcolor=gray80 style=filled]
+	"3-the_joker" [label=the_joker]
+	"baddies-Player 3" -- "3-the_joker"
+	node [fillcolor=gray80 style=filled]
+	"3-mother_in_law" [label=mother_in_law]
+	"baddies-Player 3" -- "3-mother_in_law"
+	node [fillcolor=gray80 style=filled]
+	"3-the_card_with_the_longest_name_to_type_as_human_player" [label=the_card_with_the_longest_name_to_type_as_human_player]
+	"baddies-Player 3" -- "3-the_card_with_the_longest_name_to_type_as_human_player"
+	node [fillcolor=gray80 style=filled]
+	"4-gru" [label=gru]
+	"baddies-Player 4" -- "4-gru"
+	node [fillcolor=gray10 style=filled]
+	"4-the_joker" [label=the_joker]
+	"baddies-Player 4" -- "4-the_joker"
+	node [fillcolor=gray10 style=filled]
+	"4-mother_in_law" [label=mother_in_law]
+	"baddies-Player 4" -- "4-mother_in_law"
+	node [fillcolor=gray80 style=filled]
+	"4-the_card_with_the_longest_name_to_type_as_human_player" [label=the_card_with_the_longest_name_to_type_as_human_player]
+	"baddies-Player 4" -- "4-the_card_with_the_longest_name_to_type_as_human_player"
+	node [fillcolor=gray80 style=filled]
+	"5-gru" [label=gru]
+	"baddies-Player 5" -- "5-gru"
+	node [fillcolor=gray80 style=filled]
+	"5-the_joker" [label=the_joker]
+	"baddies-Player 5" -- "5-the_joker"
+	node [fillcolor=gray80 style=filled]
+	"5-mother_in_law" [label=mother_in_law]
+	"baddies-Player 5" -- "5-mother_in_law"
+	node [fillcolor=gray80 style=filled]
+	"5-the_card_with_the_longest_name_to_type_as_human_player" [label=the_card_with_the_longest_name_to_type_as_human_player]
+	"baddies-Player 5" -- "5-the_card_with_the_longest_name_to_type_as_human_player"
+	node [fillcolor=gray80 style=filled]
+	"6-gru" [label=gru]
+	"baddies-Player 6" -- "6-gru"
+	node [fillcolor=gray10 style=filled]
+	"6-the_joker" [label=the_joker]
+	"baddies-Player 6" -- "6-the_joker"
+	node [fillcolor=green style=filled]
+	"6-mother_in_law" [label=mother_in_law]
+	"baddies-Player 6" -- "6-mother_in_law"
+	node [fillcolor=gray10 style=filled]
+	"6-the_card_with_the_longest_name_to_type_as_human_player" [label=the_card_with_the_longest_name_to_type_as_human_player]
+	"baddies-Player 6" -- "6-the_card_with_the_longest_name_to_type_as_human_player"
+	node [fillcolor=gray10 style=filled]
+	"7-gru" [label=gru]
+	"baddies-Player 7" -- "7-gru"
+	node [fillcolor=gray10 style=filled]
+	"7-the_joker" [label=the_joker]
+	"baddies-Player 7" -- "7-the_joker"
+	node [fillcolor=gray80 style=filled]
+	"7-mother_in_law" [label=mother_in_law]
+	"baddies-Player 7" -- "7-mother_in_law"
+	node [fillcolor=gray10 style=filled]
+	"7-the_card_with_the_longest_name_to_type_as_human_player" [label=the_card_with_the_longest_name_to_type_as_human_player]
+	"baddies-Player 7" -- "7-the_card_with_the_longest_name_to_type_as_human_player"
+	node [fillcolor=gray80 style=filled]
+	"8-gru" [label=gru]
+	"baddies-Player 8" -- "8-gru"
+	node [fillcolor=gray80 style=filled]
+	"8-the_joker" [label=the_joker]
+	"baddies-Player 8" -- "8-the_joker"
+	node [fillcolor=gray80 style=filled]
+	"8-mother_in_law" [label=mother_in_law]
+	"baddies-Player 8" -- "8-mother_in_law"
+	node [fillcolor=gray10 style=filled]
+	"8-the_card_with_the_longest_name_to_type_as_human_player" [label=the_card_with_the_longest_name_to_type_as_human_player]
+	"baddies-Player 8" -- "8-the_card_with_the_longest_name_to_type_as_human_player"
+	node [fillcolor=gray10 style=filled]
+	"9-gru" [label=gru]
+	"baddies-Player 9" -- "9-gru"
+	node [fillcolor=gray10 style=filled]
+	"9-the_joker" [label=the_joker]
+	"baddies-Player 9" -- "9-the_joker"
+	node [fillcolor=gray10 style=filled]
+	"9-mother_in_law" [label=mother_in_law]
+	"baddies-Player 9" -- "9-mother_in_law"
+	node [fillcolor=gray10 style=filled]
+	"9-the_card_with_the_longest_name_to_type_as_human_player" [label=the_card_with_the_longest_name_to_type_as_human_player]
+	"baddies-Player 9" -- "9-the_card_with_the_longest_name_to_type_as_human_player"
+	node [fillcolor=gray10 style=filled]
+	"10-gru" [label=gru]
+	"baddies-Player 10" -- "10-gru"
+	node [fillcolor=gray80 style=filled]
+	"10-the_joker" [label=the_joker]
+	"baddies-Player 10" -- "10-the_joker"
+	node [fillcolor=gray80 style=filled]
+	"10-mother_in_law" [label=mother_in_law]
+	"baddies-Player 10" -- "10-mother_in_law"
+	node [fillcolor=gray10 style=filled]
+	"10-the_card_with_the_longest_name_to_type_as_human_player" [label=the_card_with_the_longest_name_to_type_as_human_player]
+	"baddies-Player 10" -- "10-the_card_with_the_longest_name_to_type_as_human_player"
+}
