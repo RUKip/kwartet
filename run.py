@@ -59,26 +59,29 @@ def ask_set_strategies(nr_of_players):
 	return logic, thinking
 
 def ask_strategies(nr_of_players):
-	print("Please no faulty input here")
+	print("Please no faulty input here, Enter is no player")
 	#ask logic order
 	logic = {x: ComputerAgent.STRATEGY_RANDOM for x in range(1, nr_of_players+1)}
 	answer = input("Who plays 1st order? (example syntax: 1,3,4): ")
-	first_players = list(map(int,answer.split(",")))
-	for first_player in first_players:
-		logic[first_player] = ComputerAgent.STRATEGY_1ST
+	if answer.strip():
+		first_players = list(map(int,answer.split(",")))
+		for first_player in first_players:
+			logic[first_player] = ComputerAgent.STRATEGY_1ST
 
 	answer = input("Who plays 2nd order? (example syntax: 1,3,4): ")
-	second_players = list(map(int,answer.split(",")))
-	for second_player in second_players:
-		logic[second_player] = ComputerAgent.STRATEGY_2ND
+	if answer.strip():
+		second_players = list(map(int,answer.split(",")))
+		for second_player in second_players:
+			logic[second_player] = ComputerAgent.STRATEGY_2ND
 	print("Everyone else plays random!")
 
 	#ask thinking strategy
 	thinking = {x: ComputerAgent.BASIC_THINKING for x in range(1, nr_of_players+1)}
 	answer = input("Who do advanced thinking? (example syntax: 1,2,4): ")
-	smarty_pants = list(map(int, answer.split(",")))
-	for advanced_player in smarty_pants:
-		thinking[advanced_player] = ComputerAgent.ADVANCED_THINKING
+	if answer.strip():
+		smarty_pants = list(map(int, answer.split(",")))
+		for advanced_player in smarty_pants:
+			thinking[advanced_player] = ComputerAgent.ADVANCED_THINKING
 	print("Everyone else just basic!")
 
 	return logic, thinking
@@ -152,7 +155,8 @@ has_human_player = ask_human_player(player_cnt)
 if has_human_player:
 	print("Tip: use the 'help' command to see all available commands")
 	time.sleep(3)
-	result = start_one_game(player_cnt, has_human_player)
+	thinking[player_cnt] = ComputerAgent.BASIC_THINKING
+	result = start_one_game(player_cnt, has_human_player, logic, thinking)
 	if result[player_cnt] == max(result.values()):
 		print("You win, congrats!")
 	else:
