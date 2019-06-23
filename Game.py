@@ -2,6 +2,7 @@ import time
 from copy import deepcopy
 import logging
 import random
+
 from ComputerAgent import ComputerAgent
 from HumanAgent import HumanAgent
 from Card import Card
@@ -17,15 +18,16 @@ class Game(object):
     cards_in_play = {}  #{agent_id => {group => [Cards]}}
     scores = {}         #{agent_id => score}
 
-    def __init__(self, has_human_player):
+    def __init__(self, has_human_player, reasoning):
         self.hasHuman = has_human_player
+        self.reasoning = reasoning
 
-    def initGame(self, player_cnt):
+    def initGame(self, player_cnt, strategies):
         # create initial model
         model = Model(player_cnt)
         model.initModel()
 
-        self.initAgents(player_cnt, model)
+        self.initAgents(player_cnt, model, strategies)
 
         all_cards = self.initCardsInPlay(model)
         self.divideCards(all_cards)
@@ -46,14 +48,14 @@ class Game(object):
 
 
     # create agents and set model
-    def initAgents(self, player_cnt, model):
+    def initAgents(self, player_cnt, model, strategies):
         for x in range(1, player_cnt+1):
             opponents = list(range(1, player_cnt+1))
             opponents.remove(x)
             if (x == player_cnt) and self.hasHuman:
                 agent = HumanAgent(player_cnt, list(range(1, player_cnt)))
             else:
-                agent = ComputerAgent(x, opponents)
+                agent = ComputerAgent(x, opponents, strategies[x])
             agent.setModel(deepcopy(model))
             self.agents[x] = agent
             self.cards_in_play[agent.id] = {}
@@ -210,6 +212,9 @@ class Game(object):
         for a in self.agents.values():
             GraphPrinting.create_graph(a, filename)
 
+    #change here the reasoning strategies!
     def applyReasoningStrategies(self):
-        if 2 in self.agents:  # If we have a player 2, it is an advanced player:
-            self.agents[2].advanced_thinking()
+        for agent_nr in self.reasoning:
+            if self.reasoning[agent_nr] == ComputerAgent.ADVANCED_THINKING:
+                if agent_nr in self.agents:  # If we have that player in game still
+                    self.agents[agent_nr].advanced_thinking()

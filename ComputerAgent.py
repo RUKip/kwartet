@@ -8,12 +8,26 @@ import random
 
 class ComputerAgent(Agent):
 
+	STRATEGY_RANDOM = 0
+	STRATEGY_1ST = 1
+	STRATEGY_2ND = 2
+
+	BASIC_THINKING = 0
+	ADVANCED_THINKING = 1
+
+	def __init__(self, id, opponents, strategy):
+		super().__init__(id, opponents)
+		self.strategy = strategy
+
 	#Set strategies for agents here!
 	def makeDecision(self):
-		if self.id == 2:
-			return self.askKnownCardsSecondOrder()
-		elif self.id == 1:
+		if self.strategy == self.STRATEGY_1ST:
+			logging.info("Agent " + str(self.id) + ", playing first order")
 			return self.askKnownCards()
+		elif self.strategy == self.STRATEGY_2ND:
+			logging.info("Agent " + str(self.id) + ", playing second order")
+			return self.askKnownCardsSecondOrder()
+		logging.info("Agent " + str(self.id) + ", playing random")
 		return self.askRandom()
 
 	def generateInitialModel(self, init_card_set):

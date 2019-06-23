@@ -2,6 +2,7 @@ import logging
 import time
 
 import InputHandler
+from ComputerAgent import ComputerAgent
 from Game import Game
 
 
@@ -28,6 +29,7 @@ def ask_game_cnt():
 			break
 	return games_cnt
 
+
 def ask_multiple_games():
 	while True:
 		answer = InputHandler.handleInput("Do you want to play multiple games? (y/n): ")
@@ -41,20 +43,63 @@ def ask_multiple_games():
 			print("Try again, the y and n are located in the middle area of the keyboard...")
 	return games_cnt
 
-def ask_human_player(player_cnt):
+
+def ask_set_strategies(nr_of_players):
+	while True:
+		answer = InputHandler.handleInput("Set specific agent strategies? (y/n): ")
+		if answer[0] == "y":
+			(logic, thinking) = ask_strategies(nr_of_players)
+			break
+		elif answer[0] == "n":
+			logic = {x:ComputerAgent.STRATEGY_1ST for x in range(1, nr_of_players+1)}	#default everyone plays 1st order logic
+			thinking = {x:ComputerAgent.BASIC_THINKING for x in range(1, nr_of_players+1)} #default everyone plays with basic thinking
+			break
+		else:
+			print("Try again, the y and n are located in the middle area of the keyboard...")
+	return logic, thinking
+
+def ask_strategies(nr_of_players):
+	print("Please no faulty input here")
+	#ask logic order
+	logic = {x: ComputerAgent.STRATEGY_RANDOM for x in range(1, nr_of_players+1)}
+	answer = input("Who plays 1st order? (example syntax: 1,3,4): ")
+	first_players = list(map(int,answer.split(",")))
+	for first_player in first_players:
+		logic[first_player] = ComputerAgent.STRATEGY_1ST
+
+	answer = input("Who plays 2nd order? (example syntax: 1,3,4): ")
+	second_players = list(map(int,answer.split(",")))
+	for second_player in second_players:
+		logic[second_player] = ComputerAgent.STRATEGY_2ND
+	print("Everyone else plays random!")
+
+	#ask thinking strategy
+	thinking = {x: ComputerAgent.BASIC_THINKING for x in range(1, nr_of_players+1)}
+	answer = input("Who do advanced thinking? (example syntax: 1,2,4): ")
+	smarty_pants = list(map(int, answer.split(",")))
+	for advanced_player in smarty_pants:
+		thinking[advanced_player] = ComputerAgent.ADVANCED_THINKING
+	print("Everyone else just basic!")
+
+	return logic, thinking
+
+
+
+def ask_human_player(nr_of_players):
 	while True:
 		answer = InputHandler.handleInput("Do you want to join the fun? Note: no UI availble (y/n)")
 		if answer[0] == "y":
-			print("Cool, you will be player " + str(player_cnt))
+			print("Cool, you will be player " + str(nr_of_players))
 			return True
 		else:
 			print("Ok guess not")
 			return False
 
-def start_one_game(player_cnt, has_human_player):
+
+def start_one_game(nr_of_players, has_human_player, logic, thinking):
 	print("Lets rumble!.. (This can take a few sec)")
-	game = Game(has_human_player)
-	game.initGame(player_cnt)
+	game = Game(has_human_player, thinking)
+	game.initGame(nr_of_players, logic)
 	result = game.startGameLoop()
 	return result
 
@@ -100,6 +145,8 @@ logging.info("Starting simulation")
 # player_cnt = 3
 player_cnt = ask_player_cnt()
 
+logic, thinking = ask_set_strategies(player_cnt)
+
 has_human_player = ask_human_player(player_cnt)
 
 if has_human_player:
@@ -118,7 +165,7 @@ else:
 
 	final_result = list_of_zeroes(player_cnt + 1)
 	for i in range(1, games_cnt + 1):
-		result = start_one_game(player_cnt, has_human_player)
+		result = start_one_game(player_cnt, has_human_player, logic, thinking)
 
 		#single winner function, on case of draw divide the win
 		winner_count = 0

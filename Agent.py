@@ -1,8 +1,7 @@
 import logging
-
 from abc import ABC, abstractmethod
-
 from Card import Card
+
 
 class Agent(ABC):
     card_set = {}
