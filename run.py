@@ -111,15 +111,15 @@ def start_one_game(nr_of_players, has_human_player, logic, thinking):
 f = open("output.log", 'w')
 title = """Simulation of simplified version of the well known Kwartet game.
 
-		  _____
-		 |A .  | _____
-		 | /.\ ||A ^  | _____
-		 |(_._)|| / \ ||A _  | _____
-		 |  |  || \ / || ( ) ||A_ _ |
-		 |____V||  .  ||(_'_)||( v )|
-				|____V||  |  || \ / |
-					   |____V||  .  |
-							  |____V|
+          _____
+         |A .  | _____
+         | /.\ ||A ^  | _____
+         |(_._)|| / \ ||A _  | _____
+         |  |  || \ / || ( ) ||A_ _ |
+         |____V||  .  ||(_'_)||( v )|
+                |____V||  |  || \ / |
+                       |____V||  .  |
+                              |____V|
 
 
 Created by Diego Cabo, Tanja de Vries and Ruben Kip\n"""
